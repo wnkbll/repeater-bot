@@ -13,8 +13,11 @@ class ConfigSchema:
 
 class Config(ConfigSchema):
     def __init__(self, path: PathLike):
-        config = JsonReader.read(path, False)
+        _config = JsonReader.read(path, False)
 
-        self.white_list = config["white_list"]
-        self.chats = config["chats"]
-        self.sleep = config["sleep"]
+        self.white_list = _config["white_list"]
+        self.chats = _config["chats"]
+        self.sleep = _config["sleep"]
+
+
+config = Config("data/config.json")
