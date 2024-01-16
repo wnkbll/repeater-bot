@@ -1,5 +1,3 @@
-lang = "en"
-
 BOT: dict[str, str] = {
     "start": "Verification completed.",
     "posts_number": "Current number of posts: {number}.",
@@ -18,6 +16,7 @@ CLIENT: dict[str, str] = {
 
 
 def register(strings: dict) -> dict[str, dict[str, str]]:
+    lang = "en"
     strings[lang] = {}
 
     for item in BOT.items():
