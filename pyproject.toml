@@ -1,0 +1,4 @@
+[project]
+name = "RepeaterBotUpdated"
+version = "0.1"
+dependencies = ["aiogram==3.3.0", "loguru==0.7.2", "python-dotenv==1.0.0"]
