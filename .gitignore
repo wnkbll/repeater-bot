@@ -1,5 +1,3 @@
-
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -219,3 +217,6 @@ fabric.properties
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Python,PyCharm+all
 /.idea/misc.xml
 /.idea/modules.xml
+
+/data/
+config.json
