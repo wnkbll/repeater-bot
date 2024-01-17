@@ -12,7 +12,6 @@ from src.utils import environment, Config, JsonReader, TimeSetter
 
 lang = "ru"
 
-
 config_path = "data/config.json"
 data_path = "data/data.json"
 
