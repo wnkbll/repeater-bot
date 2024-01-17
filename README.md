@@ -2,7 +2,7 @@
  + `python -m venv venv` - создание виртуального окружения;
  + `source venv/bin/activate` - активация виртуального окружения;
  + `python -m pip install --upgrade pip wheel setuptools` - обновление пакетов `pip`, `wheel` и `setuptools`;
- + `pip install -r requirements.txt` - установка зависимостей;
+ + `pip install -e .` - установка зависимостей;
  + `python -m src.bot` - запуск бота;
  + `python -m src.client` - запуск клиента.
 
@@ -11,7 +11,7 @@
  + `python -m venv venv` - создание виртуального окружения;
  + `venv/Scripts/activate` - активация виртуального окружения;
  + `python.exe -m pip install --upgrade pip wheel setuptools` - обновление пакетов `pip`, `wheel` и `setuptools`;
- + `pip install -r requirements.txt` - установка зависимостей;
+ + `pip install -e .` - установка зависимостей;
  + `python -m src.bot`  - запуск бота;
  + `python -m src.client` - запуск клиента.
 
