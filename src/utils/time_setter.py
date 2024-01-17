@@ -24,7 +24,7 @@ class TimeSetter:
         return start, stop
 
     @staticmethod
-    def check_timezone(_time: str) -> str:
+    def localize(_time: str) -> str:
         moscow = timezone("Europe/Moscow")
         local_timezone = timezone(get_localzone_name())
 
