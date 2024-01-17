@@ -219,4 +219,5 @@ fabric.properties
 /.idea/modules.xml
 
 /data/
+/session/
 config.json

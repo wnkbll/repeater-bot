@@ -60,7 +60,7 @@ def set_scheduler(client: TelegramClient) -> None:
 
 
 def main():
-    client = TelegramClient("client", environment.api_id, environment.api_hash, system_version="4.16.30-vxCUSTOM").start(environment.phone)
+    client = TelegramClient("session/client", environment.api_id, environment.api_hash, system_version="4.16.30-vxCUSTOM").start(environment.phone)
     client.disconnect()
 
     config = Config(**JsonReader.read(config_path, True, ("src.bot", "main")))
