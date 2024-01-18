@@ -21,7 +21,7 @@ class Client:
         self.client.start(environment.phone)
         self.client.disconnect()
 
-        self.config = Config(**JsonReader.read(config_path, True, ("src.bot", "__init__")))
+        self.config = Config(**JsonReader.read(config_path, True, ("src.client", "__init__")))
         self.chats = self.config.chats
         self.start, self.stop = TimeSetter.get_interval(self.config.sleep)
 
