@@ -25,7 +25,7 @@ async def repeat(client: TelegramClient, chat: EntityLike) -> None:
     try:
         entity = await client.get_entity(chat)
     except ValueError:
-        logger.error(STRINGS[lang]["entity_existence_error"].format(chat=chat))
+        logger.error(STRINGS["debug"]["entity_existence_error"].format(chat=chat))
         return
 
     index = random.randint(0, len(posts) - 1)
@@ -33,13 +33,13 @@ async def repeat(client: TelegramClient, chat: EntityLike) -> None:
         await client.send_message(entity, posts[index]["message"], file=posts[index]["file"])
         logger.success(STRINGS[lang]["post_sent"].format(title=entity.title))
     except errors.FloodWaitError as e:
-        logger.error(STRINGS[lang]["flood_wait_error"].format(seconds=e.seconds, title=entity.title))
+        logger.error(STRINGS["debug"]["flood_wait_error"].format(seconds=e.seconds, title=entity.title))
     except errors.SlowModeWaitError as e:
-        logger.error(STRINGS[lang]["slow_mode_wait_error"].format(seconds=e.seconds, title=entity.title))
+        logger.error(STRINGS["debug"]["slow_mode_wait_error"].format(seconds=e.seconds, title=entity.title))
     except errors.ChannelPrivateError:
-        logger.error(STRINGS[lang]["channel_private_error"].format(title=entity.title))
+        logger.error(STRINGS["debug"]["channel_private_error"].format(title=entity.title))
     except errors.BadMessageError:
-        logger.error(STRINGS[lang]["bad_message_error"].format(title=entity.title))
+        logger.error(STRINGS["debug"]["bad_message_error"].format(title=entity.title))
 
 
 def setup(client: TelegramClient, chat: EntityLike) -> None:
@@ -78,7 +78,7 @@ def main():
 
         _config = Config(**JsonReader.read(config_path, False))
         if config != _config:
-            logger.info(STRINGS[lang]["config_changed"])
+            logger.info(STRINGS["debug"]["config_changed"])
             config = _config
             start, stop = TimeSetter.get_interval(config.sleep)
             schedule.clear()
