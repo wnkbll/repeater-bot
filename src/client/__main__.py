@@ -43,12 +43,15 @@ class Client:
             logger.error(STRINGS["debug"]["entity_existence_error"].format(chat=chat))
             return
 
-        index = self.indexes[chat]
-        if index >= len(posts):
+        try:
+            index = self.indexes[chat]
+            if index >= len(posts):
+                index = 0
+                self.indexes[chat] = 1
+            else:
+                self.indexes[chat] = index + 1
+        except KeyError:
             index = 0
-            self.indexes[chat] = 1
-        else:
-            self.indexes[chat] = index + 1
 
         try:
             await self.client.send_message(entity, posts[index]["message"], file=posts[index]["file"])
