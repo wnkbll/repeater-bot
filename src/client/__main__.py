@@ -15,8 +15,8 @@ config_path = "data/config.json"
 data_path = "data/data.json"
 
 
-logger.add("logs/errors.log", level="ERROR", format="{time:DD.MM.YYYY, HH:mm:ss} | {level} | {message}", rotation="1KB",
-           compression="zip")
+logger.add("logs/client/errors.log", level="ERROR", format="{time:DD.MM.YYYY, HH:mm:ss} | {level} | {message}",
+           rotation="1MB", compression="zip")
 
 
 class Client:
