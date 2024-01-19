@@ -41,17 +41,17 @@ async def waiting_post(message: Message, state: FSMContext, bot: Bot):
 
 
 @router.message(AddState.waiting_chat)
-async def waiting_chat(message: Message, state: FSMContext, bot: Bot):
-    chats = Config(**JsonReader.read(config_path, True, ("src.bot.routes.add", "waiting_chat"))).chats
+async def waiting_chat(message: Message, state: FSMContext):
+    chats = Config(**JsonReader.read(config_path, False)).chats
 
     splitted_message = message.text.split(":")  # ToDo Добавить валидацию данных
 
-    chats[splitted_message[0] + splitted_message[1]] = int(splitted_message[2])  # ToDo Добавить поддержку массивов
+    chats[f"{splitted_message[0]}:{splitted_message[1]}"] = int(splitted_message[2])  # ToDo Добавить поддержку массивов
 
     config = JsonReader.read(config_path, False)
     config["chats"] = chats
 
-    JsonReader.write(config, config_path)
+    JsonReader.write(config, config_path, True, ("src.bot.routes.add", "waiting_chat"))
 
     await message.answer(f"Current number of posts: {len(chats)}.")  # ToDo Нужна новая строка
     await state.clear()
