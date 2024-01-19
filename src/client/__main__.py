@@ -39,13 +39,13 @@ class Client:
         posts = JsonReader.read(data_path, False)
 
         if len(posts) <= 0:
-            return
+            return None
 
         try:
             entity = await self.client.get_entity(chat)
         except ValueError:
             logger.error(STRINGS["debug"]["entity_existence_error"].format(chat=chat))
-            return
+            return None
 
         try:
             index = self.indexes[chat]
