@@ -15,6 +15,10 @@ config_path = "data/config.json"
 data_path = "data/data.json"
 
 
+logger.add("logs/errors.log", level="ERROR", format="{time:DD.MM.YYYY, HH:mm:ss} | {level} | {message}", rotation="1KB",
+           compression="zip")
+
+
 class Client:
     def __init__(self):
         self.client = TelegramClient("session/client", environment.api_id, environment.api_hash, system_version="4.16.30-vxCUSTOM")
@@ -64,6 +68,8 @@ class Client:
             logger.error(STRINGS["debug"]["channel_private_error"].format(title=entity.title))
         except errors.BadMessageError:
             logger.error(STRINGS["debug"]["bad_message_error"].format(title=entity.title))
+        except KeyError as e:
+            logger.error(STRINGS["debug"]["bad_message_error"].format(traceback=e.__traceback__))
 
     def setup(self, chat: EntityLike) -> None:
         self.client.start(environment.phone)

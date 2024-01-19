@@ -7,7 +7,9 @@ DEBUG: dict[str, str] = {
     "bad_message_error": "BadMessage error occurred in {title}.",
     "entity_existence_error": "Cannot find any entity corresponding to '{chat}'",
 
-    "config_changed": "File config.json was changed."
+    "config_changed": "File config.json was changed.",
+
+    "key_error": "Key error at {traceback}."
 }
 
 

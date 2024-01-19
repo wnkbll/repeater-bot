@@ -221,3 +221,4 @@ fabric.properties
 /data/
 /session/
 config.json
+/logs/
