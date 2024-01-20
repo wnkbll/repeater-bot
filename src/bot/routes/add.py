@@ -6,6 +6,7 @@ from aiogram.types import Message
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 
+from loguru import logger
 from datetime import time
 
 from src.bot.filters import WhiteListFilter
@@ -78,15 +79,17 @@ async def waiting_post(message: Message, state: FSMContext, bot: Bot):
 async def waiting_chat(message: Message, state: FSMContext):
     chats = Config(**JsonReader.read(config_path, False)).chats
 
-    if not re.search(link_pattern, message.text).group():
-        await message.answer("Chat error")  # ToDo Нужна новая строка и logger
+    if re.search(link_pattern, message.text) is None:
+        await message.answer(STRINGS[lang]["bad_link"])
+        logger.warning(STRINGS["debug"]["bad_link"].format(username=message.from_user.username))
         return None
 
     link = re.search(link_pattern, message.text).group()
     _time = validate_time(message.text.replace(link, "").replace(":", "", 1).replace(" ", ""))
 
     if _time is None:
-        await message.answer("Chat error")  # ToDo Нужна новая строка и logger
+        await message.answer(STRINGS[lang]["bad_time"])
+        logger.warning(STRINGS["debug"]["bad_time"].format(username=message.from_user.username))
         return None
 
     chats[link.replace('"', "").replace("'", "")] = _time
@@ -96,7 +99,7 @@ async def waiting_chat(message: Message, state: FSMContext):
 
     JsonReader.write(config, config_path, True, ("src.bot.routes.add", "waiting_chat"))
 
-    await message.answer(f"Current number of posts: {len(chats)}.")  # ToDo Нужна новая строка
+    await message.answer(STRINGS[lang]["posts_number"].format(number=len(chats)))
     await state.clear()
 
 
@@ -110,7 +113,8 @@ async def add(message: Message, command: CommandObject, state: FSMContext):
     ]
 
     if command.args not in arguments or len(command.args.split()) > 1:
-        await message.answer("Unexpected argument")  # ToDo Нужна новая строка и logger
+        await message.answer(STRINGS[lang]["unexpected_args"])
+        logger.warning(STRINGS["debug"]["unexpected_args"].format(username=message.from_user.username))
         return None
 
     async def add_post():
@@ -118,7 +122,7 @@ async def add(message: Message, command: CommandObject, state: FSMContext):
         await state.set_state(AddState.waiting_post)
 
     async def add_chat():
-        await message.answer("Waiting new chat")  # ToDo Нужна новая строка
+        await message.answer(STRINGS[lang]["add_chat"])
         await state.set_state(AddState.waiting_chat)
 
     argument = command.args

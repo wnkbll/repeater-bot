@@ -7,7 +7,11 @@ BOT: dict[str, str] = {
     "all": "All",
     "post_edited": "Post №{number} was edited.",
     "send_edited": "Send edited post.",
-    "no_permissions": "You have no permissions."
+    "no_permissions": "You have no permissions.",
+    "add_chat": "Sent new chat.",
+    "unexpected_args": "You passed unexpected arguments.",
+    "bad_link": "Link wasn't found.",
+    "bad_time": "Time wasn't found."
 }
 
 CLIENT: dict[str, str] = {

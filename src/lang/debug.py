@@ -9,7 +9,11 @@ DEBUG: dict[str, str] = {
 
     "config_changed": "File config.json was changed.",
 
-    "key_error": "Key error at {traceback}."
+    "key_error": "Key error at {traceback}.",
+
+    "unexpected_args": "Unexpected arguments from {username}",
+    "bad_link": "Bad link from {username}",
+    "bad_time": "Bad link from {username}",
 }
 
 
