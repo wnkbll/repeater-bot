@@ -66,7 +66,7 @@ async def add(message: Message, command: CommandObject, state: FSMContext):
         "чат"
     ]
 
-    if command.args is None or len(command.args.split()) > 1 or command.args not in arguments:
+    if command.args not in arguments or len(command.args.split()) > 1:
         await message.answer("Unexpected argument")  # ToDo Нужна новая строка
         return None
 
