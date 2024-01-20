@@ -24,7 +24,7 @@ class Client:
         self.client.start(lambda: phone)
         self.client.disconnect()
 
-        logger.success("Client successfully connected.")  # ToDo Нужна новая строка
+        logger.success(STRINGS["debug"]["connected"].format(bot="Client"))
 
         self.phone = phone
 

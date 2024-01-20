@@ -1,5 +1,5 @@
 DEBUG: dict[str, str] = {
-    "connected": "Bot successfully connected.",
+    "connected": "{bot} successfully connected.",
 
     "flood_wait_error": "Flood for {seconds} in {title}.",
     "slow_mode_wait_error": "Slow mode for {seconds} in {title}",
