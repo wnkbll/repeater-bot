@@ -1,8 +1,12 @@
+import re
+
 from aiogram import Router, Bot
 from aiogram.filters import Command, CommandObject
 from aiogram.types import Message
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
+
+from datetime import time
 
 from src.bot.filters import WhiteListFilter
 
@@ -14,10 +18,40 @@ lang = "ru"
 data_path = "data/data.json"
 config_path = "data/config.json"
 
+link_pattern = r"[\"\']*https://t\.me/[+a-zA-Z0-9]*[\"\']*|[\"\']*t\.me/[@+a-zA-Z0-9]*[\"\']*"
+
 
 class AddState(StatesGroup):
     waiting_post = State()
     waiting_chat = State()
+
+
+def to_int(_time: str) -> int | None:
+    try:
+        return int(_time)
+    except ValueError:
+        return None
+
+
+def to_list(_time: str, separator: str) -> list[str] | None:
+    try:
+        times = _time.split(separator)
+        for item in times:
+            time.fromisoformat(item)
+    except ValueError:
+        return None
+
+
+def validate_time(_time: str) -> int | list | None:
+    time_int = to_int(_time)
+    if time_int is not None:
+        return time_int
+
+    time_list = to_list(_time, ",")
+    if time_list is not None:
+        return time_list
+
+    return None
 
 
 router = Router()
@@ -44,9 +78,18 @@ async def waiting_post(message: Message, state: FSMContext, bot: Bot):
 async def waiting_chat(message: Message, state: FSMContext):
     chats = Config(**JsonReader.read(config_path, False)).chats
 
-    splitted_message = message.text.split(":")  # ToDo Добавить валидацию данных
+    if not re.search(link_pattern, message.text).group():
+        await message.answer("Chat error")  # ToDo Нужна новая строка и logger
+        return None
 
-    chats[f"{splitted_message[0]}:{splitted_message[1]}"] = int(splitted_message[2])  # ToDo Добавить поддержку массивов
+    link = re.search(link_pattern, message.text).group()
+    _time = validate_time(message.text.replace(link, "").replace(":", "", 1).replace(" ", ""))
+
+    if _time is None:
+        await message.answer("Chat error")  # ToDo Нужна новая строка и logger
+        return None
+
+    chats[link.replace('"', "").replace("'", "")] = _time
 
     config = JsonReader.read(config_path, False)
     config["chats"] = chats
@@ -57,7 +100,7 @@ async def waiting_chat(message: Message, state: FSMContext):
     await state.clear()
 
 
-@router.message(Command("add"))
+@router.message(Command("add", "добавить"))
 async def add(message: Message, command: CommandObject, state: FSMContext):
     arguments = [
         "post",
@@ -67,7 +110,7 @@ async def add(message: Message, command: CommandObject, state: FSMContext):
     ]
 
     if command.args not in arguments or len(command.args.split()) > 1:
-        await message.answer("Unexpected argument")  # ToDo Нужна новая строка
+        await message.answer("Unexpected argument")  # ToDo Нужна новая строка и logger
         return None
 
     async def add_post():
