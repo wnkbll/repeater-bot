@@ -1,6 +1,4 @@
-from src.lang import ru
-from src.lang import en
-from src.lang import debug
+from src.lang import ru, en, debug
 
 STRINGS = {}
 
