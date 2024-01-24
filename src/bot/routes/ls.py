@@ -5,10 +5,12 @@ from aiogram.types import Message
 from loguru import logger
 
 from src.bot.filters import WhiteListFilter
+from src.utils import Config, JsonReader
 from src.lang import STRINGS
 
 lang = "ru"
 
+config_path = "data/config.json"
 data_path = "data/data.json"
 
 router = Router()
@@ -26,7 +28,7 @@ async def ls(message: Message, command: CommandObject):
         "сна"
     ]
 
-    if command.args not in arguments or len(command.args.split()) > 1:
+    if command.args not in arguments:
         await message.answer(STRINGS[lang]["unexpected_args"])
         logger.warning(STRINGS["debug"]["unexpected_args"].format(username=message.from_user.username))
         return None
@@ -35,10 +37,25 @@ async def ls(message: Message, command: CommandObject):
         pass
 
     async def list_chats():
-        pass
+        chats = Config(**JsonReader.read(config_path, False)).chats
+        if len(chats) < 1:
+            await message.answer("Нет чатов", parse_mode="Markdown")  # TODO Нужна новая строка
+            return None
+
+        answer = ""
+        for item in chats.items():
+            answer += f"{item[0]}: {item[1]}\n"
+
+        await message.answer(f"```\n{answer}```", parse_mode="Markdown")
 
     async def list_sleep():
-        pass
+        sleep = Config(**JsonReader.read(config_path, False)).sleep
+
+        answer = ""
+        for item in sleep.items():
+            answer += f"{item[0]}: {item[1]}\n"
+
+        await message.answer(f"```\n{answer}```", parse_mode="Markdown")
 
     argument = command.args
 

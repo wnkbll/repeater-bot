@@ -112,7 +112,7 @@ async def add(message: Message, command: CommandObject, state: FSMContext):
         "чат"
     ]
 
-    if command.args not in arguments or len(command.args.split()) > 1:
+    if command.args not in arguments:
         await message.answer(STRINGS[lang]["unexpected_args"])
         logger.warning(STRINGS["debug"]["unexpected_args"].format(username=message.from_user.username))
         return None
