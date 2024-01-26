@@ -11,7 +11,8 @@ BOT: dict[str, str] = {
     "add_chat": "Sent new chat.",
     "unexpected_args": "You passed unexpected arguments.",
     "bad_link": "Link wasn't found.",
-    "bad_time": "Time wasn't found."
+    "bad_time": "Time wasn't found.",
+    "empty_chats": "Список чатов пустой."
 }
 
 CLIENT: dict[str, str] = {

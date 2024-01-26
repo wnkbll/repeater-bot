@@ -89,7 +89,7 @@ async def ls(message: Message, command: CommandObject):
     async def list_chats():
         chats = Config(**JsonReader.read(config_path, False)).chats
         if len(chats) < 1:
-            await message.answer("Нет чатов", parse_mode="Markdown")  # TODO Нужна новая строка
+            await message.answer(STRINGS[lang]["empty_chats"], parse_mode="Markdown")
             return None
 
         answer = ""
