@@ -7,11 +7,10 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 
 from loguru import logger
-from datetime import time
 
 from src.bot.filters import WhiteListFilter
 
-from src.utils import JsonReader, Config
+from src.utils import JsonReader, Config, TimeValidator
 from src.lang import STRINGS
 
 lang = "ru"
@@ -25,34 +24,6 @@ link_pattern = r"[\"\']*https://t\.me/[+a-zA-Z0-9]*[\"\']*|[\"\']*t\.me/[@+a-zA-
 class AddState(StatesGroup):
     waiting_post = State()
     waiting_chat = State()
-
-
-def to_int(_time: str) -> int | None:
-    try:
-        return int(_time)
-    except ValueError:
-        return None
-
-
-def to_list(_time: str, separator: str) -> list[str] | None:
-    try:
-        times = _time.split(separator)
-        for item in times:
-            time.fromisoformat(item)
-    except ValueError:
-        return None
-
-
-def validate_time(_time: str) -> int | list | None:
-    time_int = to_int(_time)
-    if time_int is not None:
-        return time_int
-
-    time_list = to_list(_time, ",")
-    if time_list is not None:
-        return time_list
-
-    return None
 
 
 router = Router()
@@ -85,7 +56,7 @@ async def waiting_chat(message: Message, state: FSMContext):
         return None
 
     link = re.search(link_pattern, message.text).group()
-    _time = validate_time(message.text.replace(link, "").replace(":", "", 1).replace(" ", ""))
+    _time = TimeValidator(message.text.replace(link, "").replace(":", "", 1).replace(" ", "")).validate_time()
 
     if _time is None:
         await message.answer(STRINGS[lang]["bad_time"])

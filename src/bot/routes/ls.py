@@ -82,7 +82,7 @@ async def ls(message: Message, command: CommandObject):
             await message.answer(posts[0]["message"])
             return
 
-        builder = PostsKeyboard(posts_length).builder
+        builder = PostsKeyboard(posts_length, "ls").builder
 
         await message.answer(STRINGS[lang]["choose_post"], reply_markup=builder.as_markup())
 
@@ -93,8 +93,8 @@ async def ls(message: Message, command: CommandObject):
             return None
 
         answer = ""
-        for item in chats.items():
-            answer += f"{item[0]}: {item[1]}\n"
+        for index, item in enumerate(chats.items()):
+            answer += f"{index + 1}) {item[0]}: {item[1]}\n"
 
         await message.answer(f"```\n{answer}```", parse_mode="Markdown")
 
