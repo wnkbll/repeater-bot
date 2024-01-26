@@ -1,13 +1,13 @@
 from aiogram import Router, F
 from aiogram.filters import Command, CommandObject
 from aiogram.filters.callback_data import CallbackQuery
-from aiogram.utils.keyboard import InlineKeyboardBuilder
-from aiogram.types import Message, FSInputFile, InlineKeyboardButton
+from aiogram.types import Message, FSInputFile
 
 from loguru import logger
 
 from src.bot.callbacks import PostsCallback
 from src.bot.filters import WhiteListFilter
+from src.bot.keyboards import PostsKeyboard
 from src.utils import Config, JsonReader
 from src.lang import STRINGS
 
@@ -82,20 +82,7 @@ async def ls(message: Message, command: CommandObject):
             await message.answer(posts[0]["message"])
             return
 
-        builder = InlineKeyboardBuilder()
-        for i in range(1, posts_length + 1):
-            builder.add(InlineKeyboardButton(text=f"{i}", callback_data=PostsCallback(action="ls", index=i - 1).pack()))
-        builder.add(InlineKeyboardButton(text="Все", callback_data=PostsCallback(action="ls", index=posts_length + 1).pack()))
-
-        if posts_length % 2 == 0:
-            row_size = int(posts_length / 2)
-        else:
-            row_size = int(posts_length / 2) + 1
-
-        if row_size < 10:
-            builder.adjust(row_size, repeat=True)
-        else:
-            builder.adjust(9, repeat=True)
+        builder = PostsKeyboard(posts_length).builder
 
         await message.answer(STRINGS[lang]["choose_post"], reply_markup=builder.as_markup())
 
