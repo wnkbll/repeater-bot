@@ -10,7 +10,7 @@ from loguru import logger
 from src.bot.callbacks import ChatsCallback
 from src.bot.keyboards import ChatsKeyboard
 from src.bot.filters import WhiteListFilter
-from src.utils import Config, JsonReader
+from src.utils import Config, JsonReader, TimeValidator
 from src.lang import STRINGS
 
 lang = "ru"
@@ -27,10 +27,36 @@ class EditState(StatesGroup):
     waiting_chat = State()
 
 
-@router.callback_query(ChatsCallback.filter(F.action == "edit"))
-async def edit_chat_callback(query: CallbackQuery, callback_data: ChatsCallback):
+def get_key(dictionary: dict, index: int) -> str:
+    for i, key in enumerate(dictionary.keys()):
+        if i == index:
+            return key
+
+
+@router.message(EditState.waiting_chat)
+async def waiting_chat(message: Message, state: FSMContext):
+    user_data = await state.get_data()
     chats = Config(**JsonReader.read(config_path, False)).chats
-    index = callback_data.index
+    time = TimeValidator(message.text).validate_time()
+
+    if time is None:
+        await message.answer(STRINGS[lang]["bad_time"])
+        logger.warning(STRINGS["debug"]["bad_time"].format(username=message.from_user.username))
+        return None
+
+    chats[get_key(chats, user_data["index"])] = time
+    config = JsonReader.read(config_path, False)
+    config["chats"] = chats
+    JsonReader.write(config, config_path, False)
+
+    await state.clear()
+
+
+@router.callback_query(ChatsCallback.filter(F.action == "edit"))
+async def edit_chat_callback(query: CallbackQuery, callback_data: ChatsCallback, state: FSMContext):
+    await query.message.answer("Send new time.")
+    await state.update_data(index=callback_data.index)
+    await state.set_state(EditState.waiting_chat)
 
 
 @router.message(Command("edit", "изменить", "редактировать"))

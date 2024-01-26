@@ -13,8 +13,8 @@ class ChatsKeyboard(Keyboard):
         self.adjust_buttons()
 
     def add_buttons(self):
-        for index, item in enumerate(self.chats.items()):  # TODO Нельзя пихать ссылку в ChatsCallback?
-            self.builder.add(InlineKeyboardButton(text=f"{index + 1}", callback_data=ChatsCallback(action=self.action, chat=item[0]).pack()))
+        for index in range(self.amount_of_buttons):
+            self.builder.add(InlineKeyboardButton(text=f"{index + 1}", callback_data=ChatsCallback(action=self.action, index=index).pack()))
 
     def get_row_size(self) -> int:
         if self.amount_of_buttons <= 5:
