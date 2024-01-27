@@ -13,7 +13,7 @@ DEBUG: dict[str, str] = {
 
     "unexpected_args": "Unexpected arguments from {username}",
     "bad_link": "Bad link from {username}",
-    "bad_time": "Bad link from {username}",
+    "bad_time": "Bad time from {username}",
 }
 
 

@@ -9,8 +9,9 @@ lang = "ru"
 
 
 class PostsKeyboard(Keyboard):
-    def __init__(self, amount_of_buttons: int, action: str):
+    def __init__(self, amount_of_buttons: int, action: str, is_all_button_active: bool = True):
         super().__init__(amount_of_buttons, action)
+        self.is_all_button_active = is_all_button_active
 
         self.add_buttons()
         self.adjust_buttons()
@@ -20,8 +21,9 @@ class PostsKeyboard(Keyboard):
             button = InlineKeyboardButton(text=f"{index + 1}", callback_data=PostsCallback(action=self.action, index=index).pack())
             self.builder.add(button)
 
-        all_button = InlineKeyboardButton(text=STRINGS[lang]["all"], callback_data=PostsCallback(action=self.action, index=self.amount_of_buttons + 1).pack())
-        self.builder.add(all_button)
+        if self.is_all_button_active:
+            all_button = InlineKeyboardButton(text=STRINGS[lang]["all"], callback_data=PostsCallback(action=self.action, index=self.amount_of_buttons + 1).pack())
+            self.builder.add(all_button)
 
     def get_row_size(self) -> int:
         if self.amount_of_buttons <= 5:
