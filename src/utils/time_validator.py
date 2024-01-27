@@ -6,6 +6,13 @@ class TimeValidator:
         self.time = _time
         self.separator = separator
 
+    def to_string(self) -> str | None:
+        try:
+            time.fromisoformat(self.time)
+            return self.time
+        except ValueError:
+            return None
+
     def to_int(self) -> int | None:
         try:
             return int(self.time)

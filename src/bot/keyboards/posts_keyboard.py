@@ -3,6 +3,10 @@ from aiogram.types import InlineKeyboardButton
 from src.bot.keyboards import Keyboard
 from src.bot.callbacks import PostsCallback
 
+from src.lang import STRINGS
+
+lang = "ru"
+
 
 class PostsKeyboard(Keyboard):
     def __init__(self, amount_of_buttons: int, action: str):
@@ -12,9 +16,12 @@ class PostsKeyboard(Keyboard):
         self.adjust_buttons()
 
     def add_buttons(self):
-        for i in range(1, self.amount_of_buttons + 1):
-            self.builder.add(InlineKeyboardButton(text=f"{i}", callback_data=PostsCallback(action=self.action, index=i - 1).pack()))
-        self.builder.add(InlineKeyboardButton(text="Все", callback_data=PostsCallback(action=self.action, index=self.amount_of_buttons + 1).pack()))
+        for index in range(self.amount_of_buttons):
+            button = InlineKeyboardButton(text=f"{index + 1}", callback_data=PostsCallback(action=self.action, index=index).pack())
+            self.builder.add(button)
+
+        all_button = InlineKeyboardButton(text=STRINGS[lang]["all"], callback_data=PostsCallback(action=self.action, index=self.amount_of_buttons + 1).pack())
+        self.builder.add(all_button)
 
     def get_row_size(self) -> int:
         if self.amount_of_buttons <= 5:

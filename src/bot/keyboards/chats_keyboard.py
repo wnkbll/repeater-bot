@@ -14,7 +14,8 @@ class ChatsKeyboard(Keyboard):
 
     def add_buttons(self):
         for index in range(self.amount_of_buttons):
-            self.builder.add(InlineKeyboardButton(text=f"{index + 1}", callback_data=ChatsCallback(action=self.action, index=index).pack()))
+            button = InlineKeyboardButton(text=f"{index + 1}", callback_data=ChatsCallback(action=self.action, index=index).pack())
+            self.builder.add(button)
 
     def get_row_size(self) -> int:
         if self.amount_of_buttons <= 5:

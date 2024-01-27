@@ -12,7 +12,10 @@ BOT: dict[str, str] = {
     "unexpected_args": "You passed unexpected arguments.",
     "bad_link": "Link wasn't found.",
     "bad_time": "Time wasn't found.",
-    "empty_chats": "Список чатов пустой."
+    "empty_chats": "List of chats is empty.",
+    "on_chat_edit": "Chat {chat} successfully updated.",
+    "on_sleep_edit": "Sleep time successfully updated.",
+    "send_new_time": "Send new time."
 }
 
 CLIENT: dict[str, str] = {
