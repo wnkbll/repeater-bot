@@ -1,4 +1,6 @@
-from aiogram import Router, F
+import os
+
+from aiogram import Router, Bot, F
 from aiogram.filters import Command, CommandObject
 from aiogram.filters.callback_data import CallbackQuery
 from aiogram.types import Message
@@ -7,8 +9,8 @@ from aiogram.fsm.context import FSMContext
 
 from loguru import logger
 
-from src.bot.callbacks import ChatsCallback, SleepCallback
-from src.bot.keyboards import ChatsKeyboard, SleepKeyboard
+from src.bot.callbacks import ChatsCallback, SleepCallback, PostsCallback
+from src.bot.keyboards import ChatsKeyboard, SleepKeyboard, PostsKeyboard
 from src.bot.filters import WhiteListFilter
 from src.utils import Config, JsonReader, TimeValidator
 from src.lang import STRINGS
@@ -32,6 +34,25 @@ def get_key(dictionary: dict, index: int) -> str:
     for i, key in enumerate(dictionary.keys()):
         if i == index:
             return key
+
+
+@router.message(EditState.waiting_post)
+async def waiting_post(message: Message, state: FSMContext, bot: Bot):
+    user_data = await state.get_data()
+
+    posts = JsonReader.read(data_path, False)
+    if posts[user_data["index"]]["file"]:
+        os.remove(posts[user_data["index"]]["file"])
+
+    if message.photo:
+        await bot.download(message.photo[-1], destination=f"data/images/{message.photo[-1].file_id}.jpg")
+        posts[user_data["index"]] = {"message": message.caption, "file": f"data/images/{message.photo[-1].file_id}.jpg"}
+    else:
+        posts[user_data["index"]] = {"message": message.text, "file": None}
+
+    JsonReader.write(posts, data_path, False)
+    await message.answer(STRINGS[lang]["post_edited"].format(number=user_data['index'] + 1))
+    await state.clear()
 
 
 @router.message(EditState.waiting_chat)
@@ -75,11 +96,20 @@ async def waiting_sleep(message: Message, state: FSMContext):
     await state.clear()
 
 
+@router.callback_query(PostsCallback.filter(F.action == "edit"))
+async def edit_post_callback(query: CallbackQuery, callback_data: ChatsCallback, state: FSMContext):
+    await query.message.answer(STRINGS[lang]["send_edited"])
+    await state.update_data(index=callback_data.index)
+    await state.set_state(EditState.waiting_post)
+    await query.message.delete()
+
+
 @router.callback_query(ChatsCallback.filter(F.action == "edit"))
 async def edit_chat_callback(query: CallbackQuery, callback_data: ChatsCallback, state: FSMContext):
     await query.message.answer(STRINGS[lang]["send_new_time"])
     await state.update_data(index=callback_data.index)
     await state.set_state(EditState.waiting_chat)
+    await query.message.delete()
 
 
 @router.callback_query(SleepCallback.filter(F.action == "edit"))
@@ -87,6 +117,7 @@ async def edit_sleep_callback(query: CallbackQuery, callback_data: SleepCallback
     await query.message.answer(STRINGS[lang]["send_new_time"])
     await state.update_data(index=callback_data.index)
     await state.set_state(EditState.waiting_sleep)
+    await query.message.delete()
 
 
 @router.message(Command("edit", "update", "изменить", "редактировать"))
@@ -106,7 +137,14 @@ async def edit(message: Message, command: CommandObject):
         return None
 
     async def edit_posts():
-        pass
+        posts = JsonReader.read(data_path, False)
+
+        if len(posts) <= 0:
+            await message.answer(STRINGS[lang]["empty_list"])
+            return
+
+        builder = PostsKeyboard(len(posts), "edit", False).builder
+        await message.answer(STRINGS[lang]["choose_post"], reply_markup=builder.as_markup())
 
     async def edit_chats():
         chats = Config(**JsonReader.read(config_path, False)).chats
