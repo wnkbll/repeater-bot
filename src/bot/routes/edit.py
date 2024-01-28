@@ -141,7 +141,7 @@ async def edit(message: Message, command: CommandObject):
 
         if len(posts) <= 0:
             await message.answer(STRINGS[lang]["empty_list"])
-            return
+            return None
 
         builder = PostsKeyboard(len(posts), "edit", False).builder
         await message.answer(STRINGS[lang]["choose_post"], reply_markup=builder.as_markup())
