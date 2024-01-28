@@ -31,12 +31,12 @@ async def ls_callback(query: CallbackQuery, callback_data: PostsCallback):
             await query.message.answer_photo(image, caption=posts[index]["message"])
             await query.message.delete()
 
-            return
+            return None
 
         await query.message.answer(posts[index]["message"])
         await query.message.delete()
 
-        return
+        return None
 
     for post in posts:
         if post["file"]:
@@ -70,17 +70,17 @@ async def ls(message: Message, command: CommandObject):
 
         if posts_length <= 0:
             await message.answer(STRINGS[lang]["empty_list"])
-            return
+            return None
 
         if posts_length == 1:
             if posts[0]["file"]:
                 image = FSInputFile(posts[0]["file"])
                 await message.answer_photo(image, caption=posts[0]["message"])
 
-                return
+                return None
 
             await message.answer(posts[0]["message"])
-            return
+            return None
 
         builder = PostsKeyboard(posts_length, "ls").builder
 
