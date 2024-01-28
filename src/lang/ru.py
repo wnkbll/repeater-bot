@@ -15,7 +15,8 @@ BOT: dict[str, str] = {
     "empty_chats": "Список чатов пустой.",
     "on_chat_edit": "Чат {chat} успешно изменён.",
     "on_sleep_edit": "Время сна успешно изменено.",
-    "send_new_time": "Отправьте новое время."
+    "send_new_time": "Отправьте новое время.",
+    "on_chat_remove": 'Чат `{link}` был успешно удалён.'
 }
 
 CLIENT: dict[str, str] = {

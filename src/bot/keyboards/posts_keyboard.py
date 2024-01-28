@@ -22,7 +22,7 @@ class PostsKeyboard(Keyboard):
             self.builder.add(button)
 
         if self.is_all_button_active:
-            all_button = InlineKeyboardButton(text=STRINGS[lang]["all"], callback_data=PostsCallback(action=self.action, index=self.amount_of_buttons + 1).pack())
+            all_button = InlineKeyboardButton(text=STRINGS[lang]["all"], callback_data=PostsCallback(action=self.action, index="all").pack())
             self.builder.add(all_button)
 
     def get_row_size(self) -> int:

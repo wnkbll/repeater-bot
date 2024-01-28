@@ -25,7 +25,7 @@ async def ls_callback(query: CallbackQuery, callback_data: PostsCallback):
     posts: list[dict] = JsonReader.read(data_path, False)
     index = callback_data.index
 
-    if index != len(posts) + 1:
+    if index != "all":
         if posts[index]["file"]:
             image = FSInputFile(posts[index]["file"])
             await query.message.answer_photo(image, caption=posts[index]["message"])
