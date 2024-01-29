@@ -10,7 +10,7 @@ from loguru import logger
 from src.bot.callbacks import ChatsCallback, PostsCallback
 from src.bot.keyboards import ChatsKeyboard, PostsKeyboard
 from src.bot.filters import WhiteListFilter
-from src.utils import Config, JsonReader
+from src.utils import Config, JsonReader, Dictionaries
 from src.lang import STRINGS
 
 lang = "ru"
@@ -20,12 +20,6 @@ data_path = "data/data.json"
 
 router = Router()
 router.message.filter(WhiteListFilter())
-
-
-def get_key(dictionary: dict, index: int) -> str:
-    for i, key in enumerate(dictionary.keys()):
-        if i == index:
-            return key
 
 
 @router.callback_query(PostsCallback.filter(F.action == "remove"))
@@ -54,7 +48,7 @@ async def remove_post_callback(query: CallbackQuery, callback_data: PostsCallbac
 @router.callback_query(ChatsCallback.filter(F.action == "remove"))
 async def remove_chat_callback(query: CallbackQuery, callback_data: ChatsCallback):
     chats = Config(**JsonReader.read(config_path, False)).chats
-    chat_link = get_key(chats, callback_data.index)
+    chat_link = Dictionaries.get_key(chats, callback_data.index)
     chats.pop(chat_link)
 
     config = JsonReader.read(config_path, False)

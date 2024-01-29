@@ -17,3 +17,9 @@ class Dictionaries:
                     added_keys.append(key)
 
         return added_keys, deleted_keys
+
+    @staticmethod
+    def get_key(dictionary: dict, index: int) -> str:
+        for i, key in enumerate(dictionary.keys()):
+            if i == index:
+                return key

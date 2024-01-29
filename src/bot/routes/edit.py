@@ -12,7 +12,7 @@ from loguru import logger
 from src.bot.callbacks import ChatsCallback, SleepCallback, PostsCallback
 from src.bot.keyboards import ChatsKeyboard, SleepKeyboard, PostsKeyboard
 from src.bot.filters import WhiteListFilter
-from src.utils import Config, JsonReader, TimeValidator
+from src.utils import Config, JsonReader, TimeValidator, Dictionaries
 from src.lang import STRINGS
 
 lang = "ru"
@@ -28,12 +28,6 @@ class EditState(StatesGroup):
     waiting_post = State()
     waiting_chat = State()
     waiting_sleep = State()
-
-
-def get_key(dictionary: dict, index: int) -> str:
-    for i, key in enumerate(dictionary.keys()):
-        if i == index:
-            return key
 
 
 @router.message(EditState.waiting_post)
@@ -66,7 +60,7 @@ async def waiting_chat(message: Message, state: FSMContext):
         logger.warning(STRINGS["debug"]["bad_time"].format(username=message.from_user.username))
         return None
 
-    chat_link = get_key(chats, user_data["index"])
+    chat_link = Dictionaries.get_key(chats, user_data["index"])
     chats[chat_link] = time
     config = JsonReader.read(config_path, False)
     config["chats"] = chats
