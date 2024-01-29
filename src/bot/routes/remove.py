@@ -28,9 +28,10 @@ async def remove_post_callback(query: CallbackQuery, callback_data: PostsCallbac
     index = callback_data.index
 
     if index != "all":
-        if posts[index]["file"]:
-            os.remove(posts[index]["file"])
-        posts.pop(index)
+        _index = int(index)
+        if posts[_index]["file"]:
+            os.remove(posts[_index]["file"])
+        posts.pop(_index)
         JsonReader.write(posts, data_path, False)
         await query.message.edit_text(STRINGS[lang]["posts_number"].format(number=len(posts)))
         return None
@@ -94,7 +95,7 @@ async def remove(message: Message, command: CommandObject):
             answer += f"{index + 1}) {item[0]}: {item[1]}\n"
 
         builder = ChatsKeyboard(len(chats), "remove", chats).builder
-        await message.answer(f"```\n{answer}```", parse_mode="Markdown", reply_markup=builder.as_markup())
+        await message.answer(f"```Chats\n{answer}```", parse_mode="Markdown", reply_markup=builder.as_markup())
 
     argument = command.args
 

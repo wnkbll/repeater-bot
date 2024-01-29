@@ -13,7 +13,7 @@ BOT: dict[str, str] = {
     "bad_link": "Link wasn't found.",
     "bad_time": "Time wasn't found.",
     "empty_chats": "List of chats is empty.",
-    "on_chat_edit": "Chat {chat} successfully updated.",
+    "on_chat_edit": "Chat `{chat}` successfully updated.",
     "on_sleep_edit": "Sleep time successfully updated.",
     "send_new_time": "Send new time.",
     "on_chat_remove": 'Chat `{link}` was successfully deleted.'

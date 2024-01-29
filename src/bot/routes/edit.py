@@ -66,7 +66,7 @@ async def waiting_chat(message: Message, state: FSMContext):
     config["chats"] = chats
     JsonReader.write(config, config_path, False)
 
-    await message.answer(f"```{STRINGS[lang]['on_chat_edit'].format(chat=chat_link)}```", parse_mode="Markdown")
+    await message.answer(STRINGS[lang]['on_chat_edit'].format(chat=chat_link), parse_mode="Markdown")
     await state.clear()
 
 
@@ -151,7 +151,7 @@ async def edit(message: Message, command: CommandObject):
             answer += f"{index + 1}) {item[0]}: {item[1]}\n"
 
         builder = ChatsKeyboard(len(chats), "edit", chats).builder
-        await message.answer(f"```\n{answer}```", parse_mode="Markdown", reply_markup=builder.as_markup())
+        await message.answer(f"```Chats\n{answer}```", parse_mode="Markdown", reply_markup=builder.as_markup())
 
     async def edit_sleep():
         sleep = Config(**JsonReader.read(config_path, False)).sleep
@@ -161,7 +161,7 @@ async def edit(message: Message, command: CommandObject):
             answer += f"{item[0]}: {item[1]}\n"
 
         builder = SleepKeyboard("edit").builder
-        await message.answer(f"```\n{answer}```", parse_mode="Markdown", reply_markup=builder.as_markup())
+        await message.answer(f"```Sleep\n{answer}```", parse_mode="Markdown", reply_markup=builder.as_markup())
 
     argument = command.args
 

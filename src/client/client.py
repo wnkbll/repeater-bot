@@ -59,8 +59,9 @@ class Client:
                 index = 0
                 self.indexes[chat] = 1
             else:
-                self.indexes[chat] = index + 1
-        except KeyError:
+                self.indexes[chat] += 1
+        except KeyError as e:
+            logger.error(STRINGS["debug"]["key_error"].format(traceback=e.__traceback__))
             index = 0
 
         try:

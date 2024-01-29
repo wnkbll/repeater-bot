@@ -96,7 +96,7 @@ async def ls(message: Message, command: CommandObject):
         for index, item in enumerate(chats.items()):
             answer += f"{index + 1}) {item[0]}: {item[1]}\n"
 
-        await message.answer(f"```\n{answer}```", parse_mode="Markdown")
+        await message.answer(f"```Chats\n{answer}```", parse_mode="Markdown")
 
     async def list_sleep():
         sleep = Config(**JsonReader.read(config_path, False)).sleep
@@ -105,7 +105,7 @@ async def ls(message: Message, command: CommandObject):
         for item in sleep.items():
             answer += f"{item[0]}: {item[1]}\n"
 
-        await message.answer(f"```\n{answer}```", parse_mode="Markdown")
+        await message.answer(f"```Sleep\n{answer}```", parse_mode="Markdown")
 
     argument = command.args
 
