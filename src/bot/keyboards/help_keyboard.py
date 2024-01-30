@@ -12,14 +12,14 @@ class HelpKeyboard(Keyboard):
         self.adjust_buttons()
 
     def add_buttons(self):
-        add_button = InlineKeyboardButton(text="add", callback_data=HelpCallback(action=self.action, index="all").pack())
-        ls_button = InlineKeyboardButton(text="ls", callback_data=HelpCallback(action=self.action, index="ls").pack())
-        edit_button = InlineKeyboardButton(text="edit", callback_data=HelpCallback(action=self.action, index="edit").pack())
-        remove_button = InlineKeyboardButton(text="remove", callback_data=HelpCallback(action=self.action, index="remove").pack())
+        add_button = InlineKeyboardButton(text="/add", callback_data=HelpCallback(action=self.action, index="add").pack())
+        ls_button = InlineKeyboardButton(text="/ls", callback_data=HelpCallback(action=self.action, index="ls").pack())
+        edit_button = InlineKeyboardButton(text="/edit", callback_data=HelpCallback(action=self.action, index="edit").pack())
+        remove_button = InlineKeyboardButton(text="/remove", callback_data=HelpCallback(action=self.action, index="remove").pack())
 
         button = [add_button, ls_button, edit_button, remove_button]
 
-        self.builder.add(button)
+        self.builder.add(*button)
 
     def adjust_buttons(self):
         self.builder.adjust(self.amount_of_buttons, repeat=True)

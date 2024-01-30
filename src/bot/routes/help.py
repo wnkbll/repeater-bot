@@ -19,7 +19,15 @@ router.message.filter(WhiteListFilter())
 
 @router.callback_query(HelpCallback.filter(F.action == "help"))
 async def _help_callback(query: CallbackQuery, callback_data: HelpCallback):
-    pass
+    commands = {
+        "add": "```add\n/add [arg]```",
+        "ls": "```ls\n/ls [arg]```",
+        "edit": "```edit\n/edit [arg]```",
+        "remove": "```remove\n/remove [arg]```"
+    }
+
+    builder = HelpKeyboard().builder
+    await query.message.edit_text(commands[callback_data.index], parse_mode="Markdown", reply_markup=builder.as_markup())
 
 
 @router.message(Command("help", "помощь"))
