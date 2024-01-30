@@ -7,12 +7,12 @@ from telethon.hints import EntityLike
 
 from loguru import logger
 
-from src.utils import Config, JsonReader, TimeSetter, Dictionaries
+from src.utils import Config, JsonReader, TimeSetter, Dictionaries, Globals
 from src.lang import STRINGS
 
 PathLike = str | os.PathLike
 
-lang = "ru"
+lang = Globals.lang
 
 logger.add("logs/client/errors.log", level="ERROR", format="{time:DD.MM.YYYY, HH:mm:ss} | {level} | {message}",
            rotation="1MB", compression="zip")

@@ -1,10 +1,10 @@
 from src.client import Client
-from src.utils import environment
+from src.utils import environment, Globals
 
 
 def main():
-    config_path = "data/config.json"
-    data_path = "data/data.json"
+    config_path = Globals.config_path
+    data_path = Globals.data_path
 
     client = Client(environment.api_id, environment.api_hash, environment.phone, config_path, data_path)
     client.run()

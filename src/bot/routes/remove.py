@@ -10,13 +10,13 @@ from loguru import logger
 from src.bot.callbacks import ChatsCallback, PostsCallback
 from src.bot.keyboards import ChatsKeyboard, PostsKeyboard
 from src.bot.filters import WhiteListFilter
-from src.utils import Config, JsonReader, Dictionaries
+from src.utils import Config, JsonReader, Dictionaries, Globals
 from src.lang import STRINGS
 
-lang = "ru"
+lang = Globals.lang
 
-config_path = "data/config.json"
-data_path = "data/data.json"
+config_path = Globals.config_path
+data_path = Globals.data_path
 
 router = Router()
 router.message.filter(WhiteListFilter())

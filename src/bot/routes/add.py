@@ -9,16 +9,15 @@ from aiogram.fsm.context import FSMContext
 from loguru import logger
 
 from src.bot.filters import WhiteListFilter
-
-from src.utils import JsonReader, Config, TimeValidator
+from src.utils import JsonReader, Config, TimeValidator, Globals
 from src.lang import STRINGS
 
-lang = "ru"
+lang = Globals.lang
 
-data_path = "data/data.json"
-config_path = "data/config.json"
+config_path = Globals.config_path
+data_path = Globals.data_path
 
-link_pattern = r"[\"\']*https://t\.me/[+a-zA-Z0-9]*[\"\']*|[\"\']*t\.me/[@+a-zA-Z0-9]*[\"\']*"
+link_pattern = Globals.link_pattern
 
 
 class AddState(StatesGroup):

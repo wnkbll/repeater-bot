@@ -4,6 +4,7 @@ from src.utils.json_reader import JsonReader
 from src.utils.time_setter import TimeSetter
 from src.utils.dictionaries import Dictionaries
 from src.utils.time_validator import TimeValidator
+from src.utils.globals import Globals
 
 __all__ = [
     "Config",
@@ -11,5 +12,6 @@ __all__ = [
     "JsonReader",
     "TimeSetter",
     "Dictionaries",
-    "TimeValidator"
+    "TimeValidator",
+    "Globals"
 ]

@@ -6,15 +6,15 @@ from aiogram.types import Message, FSInputFile
 from loguru import logger
 
 from src.bot.callbacks import PostsCallback
-from src.bot.filters import WhiteListFilter
 from src.bot.keyboards import PostsKeyboard
-from src.utils import Config, JsonReader
+from src.bot.filters import WhiteListFilter
+from src.utils import Config, JsonReader, Globals
 from src.lang import STRINGS
 
-lang = "ru"
+lang = Globals.lang
 
-config_path = "data/config.json"
-data_path = "data/data.json"
+config_path = Globals.config_path
+data_path = Globals.data_path
 
 router = Router()
 router.message.filter(WhiteListFilter())
