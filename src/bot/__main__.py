@@ -29,6 +29,7 @@ async def setup():
 
 
 def main():
+    # TODO Сделать start core командой, переработать строки в src.lang
     asyncio.run(setup())
 
 
