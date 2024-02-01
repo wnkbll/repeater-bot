@@ -1,7 +1,7 @@
-from src.bot.routes import start, add, ls, edit, remove, help
+from src.bot.routes import start
 
-routers = [start.router, add.router, ls.router, edit.router, remove.router, help.router]
+routers = [start.router]
 
 __all__ = [
-    "routers"
+    "routers",
 ]

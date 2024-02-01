@@ -1,13 +1,19 @@
-from src.bot.keyboards.keyboard import Keyboard
-from src.bot.keyboards.posts_keyboard import PostsKeyboard
-from src.bot.keyboards.chats_keyboard import ChatsKeyboard
-from src.bot.keyboards.sleep_keyboard import SleepKeyboard
-from src.bot.keyboards.help_keyboard import HelpKeyboard
+from src.bot.keyboards.keyboards import (
+    StartKeyboard,
+    PostsKeyboard,
+    ChatsKeyboard,
+    SleepKeyboard,
+    BackKeyboard,
+    SleepEditKeyboard,
+    NumbersKeyboard,
+)
 
 __all__ = [
-    "Keyboard",
+    "StartKeyboard",
     "PostsKeyboard",
     "ChatsKeyboard",
     "SleepKeyboard",
-    "HelpKeyboard"
+    "BackKeyboard",
+    "SleepEditKeyboard",
+    "NumbersKeyboard",
 ]

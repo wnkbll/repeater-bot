@@ -1,13 +1,13 @@
 from aiogram.filters import BaseFilter
 from aiogram.types import Message
 
-from src.utils import Config, JsonReader
+from src.utils import Config, JsonReader, Globals
 
 from src.lang import STRINGS
 
-lang = "ru"
+lang = Globals.lang
 
-config_path = "data/config.json"
+config_path = Globals.config_path
 
 
 class WhiteListFilter(BaseFilter):
