@@ -19,7 +19,7 @@ router.message.filter(WhiteListFilter())
 
 # TODO Добавить строки локализации
 
-@router.callback_query(Callback.filter((F.subject == "start") & (F.action == "back")))
+@router.callback_query(Callback.filter(F.action == "start-back"))
 async def on_back_callback(query: CallbackQuery):
     keyboard = StartKeyboard().builder
     await query.message.edit_text("Что хотите поменять?", reply_markup=keyboard.as_markup())

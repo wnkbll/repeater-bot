@@ -11,9 +11,9 @@ class StartKeyboard:
         self.builder = InlineKeyboardBuilder()
 
         # TODO Добавить строки локализации
-        posts_button = InlineKeyboardButton(text="Список постов", callback_data=Callback(subject="start", action="posts", index=0).pack())
-        chats_button = InlineKeyboardButton(text="Список чатов", callback_data=Callback(subject="start", action="chats", index=1).pack())
-        sleep_button = InlineKeyboardButton(text="Время сна", callback_data=Callback(subject="start", action="sleep", index=2).pack())
+        posts_button = InlineKeyboardButton(text="Список постов", callback_data=Callback(action="start-posts", index=0).pack())
+        chats_button = InlineKeyboardButton(text="Список чатов", callback_data=Callback(action="start-chats", index=1).pack())
+        sleep_button = InlineKeyboardButton(text="Время сна", callback_data=Callback(action="start-sleep", index=2).pack())
 
         buttons = [posts_button, chats_button, sleep_button]
 
@@ -28,11 +28,11 @@ class PostsKeyboard:
         self.builder = InlineKeyboardBuilder()
 
         # TODO Добавить строки локализации
-        add_button = InlineKeyboardButton(text="Добавить пост", callback_data=Callback(subject="posts", action="add", index=0).pack())
-        edit_button = InlineKeyboardButton(text="Изменить пост", callback_data=Callback(subject="posts", action="edit", index=1).pack())
-        delete_button = InlineKeyboardButton(text="Удалить пост", callback_data=Callback(subject="posts", action="delete", index=2).pack())
-        list_button = InlineKeyboardButton(text="Список постов", callback_data=Callback(subject="posts", action="list", index=3).pack())
-        back_button = InlineKeyboardButton(text="<< Назад", callback_data=Callback(subject="start", action="back", index=4).pack())
+        add_button = InlineKeyboardButton(text="Добавить пост", callback_data=Callback(action="posts-add", index=0).pack())
+        edit_button = InlineKeyboardButton(text="Изменить пост", callback_data=Callback(action="posts-edit", index=1).pack())
+        delete_button = InlineKeyboardButton(text="Удалить пост", callback_data=Callback(action="posts-delete", index=2).pack())
+        list_button = InlineKeyboardButton(text="Список постов", callback_data=Callback(action="posts-list", index=3).pack())
+        back_button = InlineKeyboardButton(text="<< Назад", callback_data=Callback(action="start-back", index=4).pack())
 
         buttons = [add_button, edit_button, delete_button, list_button, back_button]
 
@@ -47,11 +47,11 @@ class ChatsKeyboard:
         self.builder = InlineKeyboardBuilder()
 
         # TODO Добавить строки локализации
-        add_button = InlineKeyboardButton(text="Добавить чат", callback_data=Callback(subject="chats", action="add", index=0).pack())
-        edit_button = InlineKeyboardButton(text="Изменить чат", callback_data=Callback(subject="chats", action="edit", index=1).pack())
-        delete_button = InlineKeyboardButton(text="Удалить чат", callback_data=Callback(subject="chats", action="delete", index=2).pack())
-        list_button = InlineKeyboardButton(text="Список чатов", callback_data=Callback(subject="chats", action="list", index=3).pack())
-        back_button = InlineKeyboardButton(text="<< Назад", callback_data=Callback(subject="start", action="back", index=4).pack())
+        add_button = InlineKeyboardButton(text="Добавить чат", callback_data=Callback(action="chats-add", index=0).pack())
+        edit_button = InlineKeyboardButton(text="Изменить чат", callback_data=Callback(action="chats-edit", index=1).pack())
+        delete_button = InlineKeyboardButton(text="Удалить чат", callback_data=Callback(action="chats-delete", index=2).pack())
+        list_button = InlineKeyboardButton(text="Список чатов", callback_data=Callback(action="chats-list", index=3).pack())
+        back_button = InlineKeyboardButton(text="<< Назад", callback_data=Callback(action="start-back", index=4).pack())
 
         buttons = [add_button, edit_button, delete_button, list_button, back_button]
 
@@ -64,9 +64,9 @@ class ChatsKeyboard:
 class SleepKeyboard:
     def __init__(self):
         self.builder = InlineKeyboardBuilder()
-        edit_button = InlineKeyboardButton(text="Изменить время", callback_data=Callback(subject="sleep", action="edit", index=0).pack())
-        list_button = InlineKeyboardButton(text="Посмотреть время", callback_data=Callback(subject="sleep", action="list", index=1).pack())
-        back_button = InlineKeyboardButton(text="<< Назад", callback_data=Callback(subject="start", action="back", index=2).pack())
+        edit_button = InlineKeyboardButton(text="Изменить время", callback_data=Callback(action="sleep-edit", index=0).pack())
+        list_button = InlineKeyboardButton(text="Посмотреть время", callback_data=Callback(action="sleep-list", index=1).pack())
+        back_button = InlineKeyboardButton(text="<< Назад", callback_data=Callback(action="start-back", index=2).pack())
 
         buttons = [edit_button, list_button, back_button]
 
@@ -81,7 +81,7 @@ class BackKeyboard:
         self.builder = InlineKeyboardBuilder()
 
         # TODO Добавить строки локализации
-        back_button = InlineKeyboardButton(text="<< Назад", callback_data=Callback(subject=subject, action="back", index=0).pack())
+        back_button = InlineKeyboardButton(text="<< Назад", callback_data=Callback(action=f"{subject}-back", index=0).pack())
 
         self.builder.add(back_button)
         self.builder.adjust(1, repeat=True)
@@ -92,9 +92,9 @@ class SleepEditKeyboard:
         self.builder = InlineKeyboardBuilder()
 
         # TODO Добавить строки локализации
-        start_button = InlineKeyboardButton(text="Начало сна", callback_data=Callback(subject="sleep", action="start", index=0).pack())
-        stop_button = InlineKeyboardButton(text="Окончание сна", callback_data=Callback(subject="sleep", action="stop", index=1).pack())
-        back_button = InlineKeyboardButton(text="<< Назад", callback_data=Callback(subject="sleep", action="back", index=2).pack())
+        start_button = InlineKeyboardButton(text="Начало сна", callback_data=Callback(action="sleep-start", index=0).pack())
+        stop_button = InlineKeyboardButton(text="Окончание сна", callback_data=Callback(action="sleep-stop", index=1).pack())
+        back_button = InlineKeyboardButton(text="<< Назад", callback_data=Callback(action="sleep-back", index=2).pack())
 
         buttons = [start_button, stop_button, back_button]
 
@@ -113,14 +113,14 @@ class NumbersKeyboard:
         chats_length = len(collection)
 
         for index in range(chats_length):
-            button = InlineKeyboardButton(text=f"{index + 1}", callback_data=Callback(subject=subject, action=action, index=index).pack())
+            button = InlineKeyboardButton(text=f"{index + 1}", callback_data=Callback(action=action, index=index).pack())
             self.builder.add(button)
 
         if is_all_button:
-            all_button = InlineKeyboardButton(text="Все", callback_data=Callback(subject=subject, action=action, index="all").pack())
+            all_button = InlineKeyboardButton(text="Все", callback_data=Callback(action=action, index="all").pack())
             self.builder.add(all_button)
 
-        back_button = InlineKeyboardButton(text="<< Назад", callback_data=Callback(subject=action, action="back", index=chats_length + 1).pack())
+        back_button = InlineKeyboardButton(text="<< Назад", callback_data=Callback(action=f"{subject}-back", index=chats_length + 1).pack())
         self.builder.add(back_button)
 
         if chats_length <= 8:

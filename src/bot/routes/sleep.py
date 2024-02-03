@@ -35,7 +35,7 @@ async def on_waiting_sleep(message: Message, state: FSMContext):
         logger.warning(f"Неправильное время от {message.from_user.username}")
         return None
 
-    config.sleep[user_data["action"]] = time
+    config.sleep[user_data["action"].replace("sleep-", "", 1)] = time
     JsonReader.write(config.model_dump(), config_path, False)
 
     keyboard = BackKeyboard("sleep").builder
@@ -47,21 +47,21 @@ async def on_waiting_sleep(message: Message, state: FSMContext):
     await message.answer(f"Текущее время сна:\n```Sleep\n{sleep_list}```", reply_markup=keyboard.as_markup(), parse_mode="Markdown")
 
 
-@router.callback_query(Callback.filter((F.subject == "sleep") & (F.action == "start")))
+@router.callback_query(Callback.filter(F.action == "sleep-start"))
 async def on_sleep_start_edit_callback(query: CallbackQuery, callback_data: Callback, state: FSMContext):
     await query.message.edit_text("Отправьте новое время начала сна в формате HH:mm. Например, 22:15.")
     await state.update_data(action=callback_data.action)
     await state.set_state(SleepState.waiting_sleep)
 
 
-@router.callback_query(Callback.filter((F.subject == "sleep") & (F.action == "stop")))
+@router.callback_query(Callback.filter(F.action == "sleep-stop"))
 async def on_sleep_stop_edit_callback(query: CallbackQuery, callback_data: Callback, state: FSMContext):
     await query.message.edit_text("Отправьте новое время окончания сна в формате HH:mm. Например, 22:15.")
     await state.update_data(action=callback_data.action)
     await state.set_state(SleepState.waiting_sleep)
 
 
-@router.callback_query(Callback.filter((F.subject == "sleep") & (F.action == "edit")))
+@router.callback_query(Callback.filter(F.action == "sleep-edit"))
 async def on_sleep_edit_callback(query: CallbackQuery):
     keyboard = SleepEditKeyboard().builder
 
@@ -74,7 +74,7 @@ async def on_sleep_edit_callback(query: CallbackQuery):
     await query.message.edit_text(f"```Sleep\n{sleep_list}```", reply_markup=keyboard.as_markup(), parse_mode="Markdown")
 
 
-@router.callback_query(Callback.filter((F.subject == "sleep") & (F.action == "list")))
+@router.callback_query(Callback.filter(F.action == "sleep-list"))
 async def on_sleep_list_callback(query: CallbackQuery):
     keyboard = BackKeyboard("sleep").builder
 
@@ -87,13 +87,13 @@ async def on_sleep_list_callback(query: CallbackQuery):
     await query.message.edit_text(f"```Sleep\n{sleep_list}```", reply_markup=keyboard.as_markup(), parse_mode="Markdown")
 
 
-@router.callback_query(Callback.filter((F.subject == "sleep") & (F.action == "back")))
+@router.callback_query(Callback.filter(F.action == "sleep-back"))
 async def on_sleep_back_callback(query: CallbackQuery):
     keyboard = SleepKeyboard().builder
     await query.message.edit_text("Что хотите сделать со временем сна?", reply_markup=keyboard.as_markup())
 
 
-@router.callback_query(Callback.filter((F.subject == "start") & (F.action == "sleep")))
+@router.callback_query(Callback.filter(F.action == "start-sleep"))
 async def on_sleep_callback(query: CallbackQuery):
     keyboard = SleepKeyboard().builder
     await query.message.edit_text("Что хотите сделать со временем сна?", reply_markup=keyboard.as_markup())

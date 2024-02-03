@@ -24,6 +24,8 @@ class TimeValidator:
             times = self.time.split(self.separator)
             for item in times:
                 time.fromisoformat(item)
+
+            return times
         except ValueError:
             return None
 
