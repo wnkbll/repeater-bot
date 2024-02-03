@@ -43,6 +43,12 @@ async def on_waiting_add_post(message: Message, state: FSMContext, bot: Bot):
     await message.answer(f"Текущее количество постов: {len(posts)}.\n\nЧто хотите сделать с постами?", reply_markup=keyboard.as_markup())
 
 
+@router.callback_query(Callback.filter((F.subject == "posts") & (F.action == "add")))
+async def on_posts_add_callback(query: CallbackQuery, state: FSMContext):
+    await query.message.edit_text("Отправьте новый пост.\nМожно приложить не больше одного изображения.")
+    await state.set_state(PostState.waiting_add)
+
+
 @router.message(PostState.waiting_edit)
 async def on_waiting_edit_post(message: Message, state: FSMContext, bot: Bot):
     user_data = await state.get_data()
@@ -73,6 +79,19 @@ async def on_posts_edit_numbers_callback(query: CallbackQuery, callback_data: Ca
     await state.set_state(PostState.waiting_edit)
 
 
+@router.callback_query(Callback.filter((F.subject == "posts") & (F.action == "edit")))
+async def on_posts_edit_callback(query: CallbackQuery):
+    posts: list[dict] = JsonReader.read(data_path, False)
+
+    if len(posts) == 0:
+        keyboard = BackKeyboard("posts").builder
+        await query.message.edit_text("Список постов пустой", reply_markup=keyboard.as_markup())
+        return None
+
+    keyboard = NumbersKeyboard("edit", "posts", posts).builder
+    await query.message.edit_text("Выберите пост, который хотите изменить.", reply_markup=keyboard.as_markup())
+
+
 @router.callback_query(Callback.filter((F.subject == "delete") & (F.action == "posts")))
 async def on_posts_delete_numbers_callback(query: CallbackQuery, callback_data: Callback):
     keyboard = PostsKeyboard().builder
@@ -95,6 +114,19 @@ async def on_posts_delete_numbers_callback(query: CallbackQuery, callback_data: 
 
     JsonReader.write([], data_path, False)
     await query.message.edit_text("Текущее количество постов: 0.\n\nЧто хотите сделать с постами?", reply_markup=keyboard.as_markup())
+
+
+@router.callback_query(Callback.filter((F.subject == "posts") & (F.action == "delete")))
+async def on_posts_delete_callback(query: CallbackQuery):
+    posts: list[dict] = JsonReader.read(data_path, False)
+
+    if len(posts) == 0:
+        keyboard = BackKeyboard("posts").builder
+        await query.message.edit_text("Список постов пустой", reply_markup=keyboard.as_markup())
+        return None
+
+    keyboard = NumbersKeyboard("delete", "posts", posts, is_all_button=True).builder
+    await query.message.edit_text("Выберите пост, который хотите удалить.", reply_markup=keyboard.as_markup())
 
 
 @router.callback_query(Callback.filter((F.subject == "list") & (F.action == "posts")))
@@ -129,38 +161,6 @@ async def on_posts_list_numbers_callback(query: CallbackQuery, callback_data: Ca
 
     await query.message.delete()
     await query.message.answer("Что хотите сделать с постами?", reply_markup=keyboard.as_markup())
-
-
-@router.callback_query(Callback.filter((F.subject == "posts") & (F.action == "add")))
-async def on_posts_add_callback(query: CallbackQuery, state: FSMContext):
-    await query.message.edit_text("Отправьте новый пост.\nМожно приложить не больше одного изображения.")
-    await state.set_state(PostState.waiting_add)
-
-
-@router.callback_query(Callback.filter((F.subject == "posts") & (F.action == "edit")))
-async def on_posts_edit_callback(query: CallbackQuery):
-    posts: list[dict] = JsonReader.read(data_path, False)
-
-    if len(posts) == 0:
-        keyboard = BackKeyboard("posts").builder
-        await query.message.edit_text("Список постов пустой", reply_markup=keyboard.as_markup())
-        return None
-
-    keyboard = NumbersKeyboard("edit", "posts", posts).builder
-    await query.message.edit_text("Выберите пост, который хотите изменить.", reply_markup=keyboard.as_markup())
-
-
-@router.callback_query(Callback.filter((F.subject == "posts") & (F.action == "delete")))
-async def on_posts_delete_callback(query: CallbackQuery):
-    posts: list[dict] = JsonReader.read(data_path, False)
-
-    if len(posts) == 0:
-        keyboard = BackKeyboard("posts").builder
-        await query.message.edit_text("Список постов пустой", reply_markup=keyboard.as_markup())
-        return None
-
-    keyboard = NumbersKeyboard("delete", "posts", posts, is_all_button=True).builder
-    await query.message.edit_text("Выберите пост, который хотите удалить.", reply_markup=keyboard.as_markup())
 
 
 @router.callback_query(Callback.filter((F.subject == "posts") & (F.action == "list")))

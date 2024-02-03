@@ -11,6 +11,7 @@ from src.lang import STRINGS
 
 lang = "ru"
 
+# TODO Переместить логгер(или убрать мб?)
 logger.add("logs/bot/errors.log", level="ERROR", format="{time:DD.MM.YYYY, HH:mm:ss} | {level} | {message}",
            rotation="1MB", compression="zip")
 
@@ -29,7 +30,7 @@ async def setup():
 
 
 def main():
-    # TODO Сделать start core командой, переработать строки в src.lang
+    # TODO Переработать строки в src.lang
     asyncio.run(setup())
 
 

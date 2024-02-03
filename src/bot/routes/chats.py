@@ -59,6 +59,12 @@ async def on_waiting_add_chat(message: Message, state: FSMContext):
     await state.clear()
 
 
+@router.callback_query(Callback.filter((F.subject == "chats") & (F.action == "add")))
+async def on_chat_add_callback(query: CallbackQuery, state: FSMContext):
+    await query.message.edit_text("Добавьте новый чат в формате {ссылка}: {время}.\nВремя должно быть числом или последовательностью в формате {HH:mm, HH:mm}")
+    await state.set_state(ChatsState.waiting_add)
+
+
 @router.message(ChatsState.waiting_edit)
 async def on_waiting_edit_chat(message: Message, state: FSMContext):
     time = TimeValidator(message.text.replace(" ", "")).validate_time()
@@ -94,6 +100,19 @@ async def on_chat_edit_number_callback(query: CallbackQuery, callback_data: Call
     await state.set_state(ChatsState.waiting_edit)
 
 
+@router.callback_query(Callback.filter((F.subject == "chats") & (F.action == "edit")))
+async def on_chat_edit_callback(query: CallbackQuery):
+    config = Config(**JsonReader.read(config_path, False))
+
+    keyboard = NumbersKeyboard("edit", "chats", config.chats).builder
+
+    chats_list = ""
+    for index, item in enumerate(config.chats.items()):
+        chats_list += f"{index + 1}) {item[0]}: {item[1]}\n"
+
+    await query.message.edit_text(f"Выберите чат, который вы хотите изменить: \n```Chats\n{chats_list}```", reply_markup=keyboard.as_markup(), parse_mode="Markdown")
+
+
 @router.callback_query(Callback.filter((F.subject == "delete") & (F.action == "chats")))
 async def on_chat_delete_number_callback(query: CallbackQuery, callback_data: Callback):
     config = Config(**JsonReader.read(config_path, False))
@@ -108,25 +127,6 @@ async def on_chat_delete_number_callback(query: CallbackQuery, callback_data: Ca
         chats_list += f"{index + 1}) {item[0]}: {item[1]}\n"
 
     await query.message.edit_text(f"Текущий список чатов:\n```Chats\n{chats_list}```", reply_markup=keyboard.as_markup(), parse_mode="Markdown")
-
-
-@router.callback_query(Callback.filter((F.subject == "chats") & (F.action == "add")))
-async def on_chat_add_callback(query: CallbackQuery, state: FSMContext):
-    await query.message.edit_text("Добавьте новый чат в формате {ссылка}: {время}.\nВремя должно быть числом или последовательностью в формате {HH:mm, HH:mm}")
-    await state.set_state(ChatsState.waiting_add)
-
-
-@router.callback_query(Callback.filter((F.subject == "chats") & (F.action == "edit")))
-async def on_chat_edit_callback(query: CallbackQuery):
-    config = Config(**JsonReader.read(config_path, False))
-
-    keyboard = NumbersKeyboard("edit", "chats", config.chats).builder
-
-    chats_list = ""
-    for index, item in enumerate(config.chats.items()):
-        chats_list += f"{index + 1}) {item[0]}: {item[1]}\n"
-
-    await query.message.edit_text(f"Выберите чат, который вы хотите изменить: \n```Chats\n{chats_list}```", reply_markup=keyboard.as_markup(), parse_mode="Markdown")
 
 
 @router.callback_query(Callback.filter((F.subject == "chats") & (F.action == "delete")))
