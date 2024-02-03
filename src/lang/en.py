@@ -25,6 +25,7 @@ BOT: dict[str, str] = {
 
     "on_bad_time": "You entered the wrong time",
     "on_bad_link": "You entered the wrong link",
+    "on_no_permission": "You do not have permission to write to this bot.",
 }
 
 BUTTONS: dict[str, str] = {

@@ -18,5 +18,5 @@ class WhiteListFilter(BaseFilter):
         if message.chat.id in self.white_list or message.from_user.id in self.white_list:
             return True
 
-        await message.answer(STRINGS[lang]["no_permission"])
+        await message.answer(STRINGS[lang]["on_no_permission"])
         return False
