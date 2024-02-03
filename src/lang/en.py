@@ -18,7 +18,7 @@ BOT: dict[str, str] = {
     "on_sleep_command": "What do you want to do with sleep time?",
     "on_sleep_edit_start": "Send the new sleep start time in HH:mm format. For example, 22:15.",
     "on_sleep_edit_stop": "Send the new sleep end time in HH:mm format. For example, 22:15.",
-    "current_sleep_time": "Текущее время сна",
+    "current_sleep_time": "Current sleep time",
 
     "on_emtpy_posts_list": "List of posts is empty.",
     "on_empty_chats_list": "List of chats is empty.",
