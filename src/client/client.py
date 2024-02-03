@@ -24,7 +24,7 @@ class Client:
         self.client.start(lambda: phone)
         self.client.disconnect()
 
-        logger.success(STRINGS["debug"]["connected"].format(bot="Client"))
+        logger.success(STRINGS["debug"]["on_client_connected"])
 
         self.phone = phone
 

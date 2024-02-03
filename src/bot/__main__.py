@@ -14,7 +14,7 @@ async def setup():
     bot = Bot(token=environment.token)
     dp = Dispatcher()
 
-    logger.success(STRINGS["debug"]["connected"].format(bot="Bot"))
+    logger.success(STRINGS["debug"]["on_bot_connected"])
 
     for router in routers:
         dp.include_router(router)

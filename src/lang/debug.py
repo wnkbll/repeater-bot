@@ -1,19 +1,15 @@
 DEBUG: dict[str, str] = {
-    "connected": "{bot} successfully connected.",
+    "on_bot_connected": "Bot successfully connected.",
+    "on_client_connected": "Client successfully connected.",
 
     "flood_wait_error": "Flood for {seconds} in {title}.",
     "slow_mode_wait_error": "Slow mode for {seconds} in {title}",
     "channel_private_error": "You tried to send message in private chat {title}",
     "bad_message_error": "BadMessage error occurred in {title}.",
     "entity_existence_error": "Cannot find any entity corresponding to '{chat}'",
-
-    "config_changed": "File config.json was changed.",
-
     "key_error": "Key error at {traceback}.",
 
-    "unexpected_args": "Unexpected arguments from {username}",
-    "bad_link": "Bad link from {username}",
-    "bad_time": "Bad time from {username}",
+    "config_changed": "File config.json was changed.",
 }
 
 

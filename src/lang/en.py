@@ -54,7 +54,7 @@ BUTTONS: dict[str, str] = {
 }
 
 CLIENT: dict[str, str] = {
-    "post_sent": "Message has been sent into {title}"
+    "on_send_post": "Message has been sent into {title}",
 }
 
 
