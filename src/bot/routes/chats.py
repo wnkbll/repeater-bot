@@ -56,7 +56,8 @@ async def on_waiting_add_chat(message: Message, state: FSMContext):
     for index, item in enumerate(config.chats.items()):
         chats_list += f"{index + 1}) {item[0]}: {item[1]}\n"
 
-    await message.answer(f"{STRINGS[lang]['current_chats']}:\n```Chats\n{chats_list}```", reply_markup=keyboard.as_markup(), parse_mode="Markdown")
+    await message.answer(f"{STRINGS[lang]['current_chats']}:\n```Chats\n{chats_list}```",
+                         reply_markup=keyboard.as_markup(), parse_mode="Markdown")
     await state.clear()
 
 
@@ -91,7 +92,8 @@ async def on_waiting_edit_chat(message: Message, state: FSMContext):
     for index, item in enumerate(config.chats.items()):
         chats_list += f"{index + 1}) {item[0]}: {item[1]}\n"
 
-    await message.answer(f"{STRINGS[lang]['current_chats']}:\n```Chats\n{chats_list}```", reply_markup=keyboard.as_markup(), parse_mode="Markdown")
+    await message.answer(f"{STRINGS[lang]['current_chats']}:\n```Chats\n{chats_list}```",
+                         reply_markup=keyboard.as_markup(), parse_mode="Markdown")
     await state.clear()
 
 
@@ -112,7 +114,8 @@ async def on_chat_edit_callback(query: CallbackQuery):
     for index, item in enumerate(config.chats.items()):
         chats_list += f"{index + 1}) {item[0]}: {item[1]}\n"
 
-    await query.message.edit_text(f"{STRINGS[lang]['on_chats_edit_callback']}: \n```Chats\n{chats_list}```", reply_markup=keyboard.as_markup(), parse_mode="Markdown")
+    await query.message.edit_text(f"{STRINGS[lang]['on_chats_edit_callback']}: \n```Chats\n{chats_list}```",
+                                  reply_markup=keyboard.as_markup(), parse_mode="Markdown")
 
 
 @router.callback_query(Callback.filter(F.action == "chats-delete-numbers"))
@@ -128,7 +131,8 @@ async def on_chat_delete_number_callback(query: CallbackQuery, callback_data: Ca
     for index, item in enumerate(config.chats.items()):
         chats_list += f"{index + 1}) {item[0]}: {item[1]}\n"
 
-    await query.message.edit_text(f"{STRINGS[lang]['current_chats']}:\n```Chats\n{chats_list}```", reply_markup=keyboard.as_markup(), parse_mode="Markdown")
+    await query.message.edit_text(f"{STRINGS[lang]['current_chats']}:\n```Chats\n{chats_list}```",
+                                  reply_markup=keyboard.as_markup(), parse_mode="Markdown")
 
 
 @router.callback_query(Callback.filter(F.action == "chats-delete"))
@@ -141,7 +145,8 @@ async def on_chat_delete_callback(query: CallbackQuery):
     for index, item in enumerate(config.chats.items()):
         chats_list += f"{index + 1}) {item[0]}: {item[1]}\n"
 
-    await query.message.edit_text(f"{STRINGS[lang]['on_chats_delete_callback']}: \n```Chats\n{chats_list}```", reply_markup=keyboard.as_markup(), parse_mode="Markdown")
+    await query.message.edit_text(f"{STRINGS[lang]['on_chats_delete_callback']}: \n```Chats\n{chats_list}```",
+                                  reply_markup=keyboard.as_markup(), parse_mode="Markdown")
 
 
 @router.callback_query(Callback.filter(F.action == "chats-list"))

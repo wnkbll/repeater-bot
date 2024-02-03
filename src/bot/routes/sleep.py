@@ -45,7 +45,8 @@ async def on_waiting_sleep(message: Message, state: FSMContext):
     for item in config.sleep.items():
         sleep_list += f"{item[0]}: {item[1]}\n"
 
-    await message.answer(f"{STRINGS[lang]['current_sleep_time']}:\n```Sleep\n{sleep_list}```", reply_markup=keyboard.as_markup(), parse_mode="Markdown")
+    await message.answer(f"{STRINGS[lang]['current_sleep_time']}:\n```Sleep\n{sleep_list}```",
+                         reply_markup=keyboard.as_markup(), parse_mode="Markdown")
 
 
 @router.callback_query(Callback.filter(F.action == "sleep-start"))

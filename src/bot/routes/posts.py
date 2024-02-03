@@ -41,7 +41,8 @@ async def on_waiting_add_post(message: Message, state: FSMContext, bot: Bot):
     await state.clear()
 
     keyboard = PostsKeyboard().builder
-    await message.answer(f"{STRINGS[lang]['current_posts_number']}: {len(posts)}.\n\n{STRINGS[lang]['on_posts_command']}", reply_markup=keyboard.as_markup())
+    await message.answer(f"{STRINGS[lang]['current_posts_number']}: {len(posts)}.\n\n{STRINGS[lang]['on_posts_command']}",
+                         reply_markup=keyboard.as_markup())
 
 
 @router.callback_query(Callback.filter(F.action == "posts-add"))
@@ -70,7 +71,8 @@ async def on_waiting_edit_post(message: Message, state: FSMContext, bot: Bot):
     await state.clear()
 
     keyboard = PostsKeyboard().builder
-    await message.answer(f"{STRINGS[lang]['current_posts_number']}: {len(posts)}.\n\n{STRINGS[lang]['on_posts_command']}", reply_markup=keyboard.as_markup())
+    await message.answer(f"{STRINGS[lang]['current_posts_number']}: {len(posts)}.\n\n{STRINGS[lang]['on_posts_command']}",
+                         reply_markup=keyboard.as_markup())
 
 
 @router.callback_query(Callback.filter(F.action == "posts-edit-numbers"))
@@ -106,7 +108,8 @@ async def on_posts_delete_numbers_callback(query: CallbackQuery, callback_data: 
             os.remove(posts[_index]["file"])
         posts.pop(_index)
         JsonReader.write(posts, data_path, False)
-        await query.message.edit_text(f"{STRINGS[lang]['current_posts_number']}: {len(posts)}.\n\n{STRINGS[lang]['on_posts_command']}", reply_markup=keyboard.as_markup())
+        await query.message.edit_text(f"{STRINGS[lang]['current_posts_number']}: {len(posts)}.\n\n{STRINGS[lang]['on_posts_command']}",
+                                      reply_markup=keyboard.as_markup())
         return None
 
     for post in posts:
@@ -114,7 +117,8 @@ async def on_posts_delete_numbers_callback(query: CallbackQuery, callback_data: 
             os.remove(post["file"])
 
     JsonReader.write([], data_path, False)
-    await query.message.edit_text(f"{STRINGS[lang]['current_posts_number']}: 0.\n\n{STRINGS[lang]['on_posts_command']}", reply_markup=keyboard.as_markup())
+    await query.message.edit_text(f"{STRINGS[lang]['current_posts_number']}: 0.\n\n{STRINGS[lang]['on_posts_command']}",
+                                  reply_markup=keyboard.as_markup())
 
 
 @router.callback_query(Callback.filter(F.action == "posts-delete"))
