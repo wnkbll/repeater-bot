@@ -11,6 +11,9 @@ from src.bot.keyboards import SleepKeyboard, BackKeyboard, SleepEditKeyboard
 from src.bot.filters import WhiteListFilter
 
 from src.utils import Config, JsonReader, TimeValidator, Globals
+from src.lang import STRINGS
+
+lang = Globals.lang
 
 config_path = Globals.config_path
 
@@ -22,8 +25,6 @@ class SleepState(StatesGroup):
     waiting_sleep = State()
 
 
-# TODO Добавить строки локализации
-
 @router.message(SleepState.waiting_sleep)
 async def on_waiting_sleep(message: Message, state: FSMContext):
     user_data = await state.get_data()
@@ -31,7 +32,7 @@ async def on_waiting_sleep(message: Message, state: FSMContext):
     time = TimeValidator(message.text).to_string()
 
     if time is None:
-        await message.answer("Вы ввели неправильное время")
+        await message.answer(STRINGS[lang]["on_bad_time"])
         logger.warning(f"Неправильное время от {message.from_user.username}")
         return None
 
@@ -44,19 +45,19 @@ async def on_waiting_sleep(message: Message, state: FSMContext):
     for item in config.sleep.items():
         sleep_list += f"{item[0]}: {item[1]}\n"
 
-    await message.answer(f"Текущее время сна:\n```Sleep\n{sleep_list}```", reply_markup=keyboard.as_markup(), parse_mode="Markdown")
+    await message.answer(f"{STRINGS[lang]['current_sleep_time']}:\n```Sleep\n{sleep_list}```", reply_markup=keyboard.as_markup(), parse_mode="Markdown")
 
 
 @router.callback_query(Callback.filter(F.action == "sleep-start"))
 async def on_sleep_start_edit_callback(query: CallbackQuery, callback_data: Callback, state: FSMContext):
-    await query.message.edit_text("Отправьте новое время начала сна в формате HH:mm. Например, 22:15.")
+    await query.message.edit_text(STRINGS[lang]["on_sleep_edit_start"])
     await state.update_data(action=callback_data.action)
     await state.set_state(SleepState.waiting_sleep)
 
 
 @router.callback_query(Callback.filter(F.action == "sleep-stop"))
 async def on_sleep_stop_edit_callback(query: CallbackQuery, callback_data: Callback, state: FSMContext):
-    await query.message.edit_text("Отправьте новое время окончания сна в формате HH:mm. Например, 22:15.")
+    await query.message.edit_text(STRINGS[lang]["on_sleep_edit_stop"])
     await state.update_data(action=callback_data.action)
     await state.set_state(SleepState.waiting_sleep)
 
@@ -90,10 +91,10 @@ async def on_sleep_list_callback(query: CallbackQuery):
 @router.callback_query(Callback.filter(F.action == "sleep-back"))
 async def on_sleep_back_callback(query: CallbackQuery):
     keyboard = SleepKeyboard().builder
-    await query.message.edit_text("Что хотите сделать со временем сна?", reply_markup=keyboard.as_markup())
+    await query.message.edit_text(STRINGS[lang]["on_sleep_command"], reply_markup=keyboard.as_markup())
 
 
 @router.callback_query(Callback.filter(F.action == "start-sleep"))
 async def on_sleep_callback(query: CallbackQuery):
     keyboard = SleepKeyboard().builder
-    await query.message.edit_text("Что хотите сделать со временем сна?", reply_markup=keyboard.as_markup())
+    await query.message.edit_text(STRINGS[lang]["on_sleep_command"], reply_markup=keyboard.as_markup())

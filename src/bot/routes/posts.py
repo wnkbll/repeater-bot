@@ -11,6 +11,9 @@ from src.bot.keyboards import PostsKeyboard, NumbersKeyboard, BackKeyboard
 from src.bot.filters import WhiteListFilter
 
 from src.utils import JsonReader, Globals
+from src.lang import STRINGS
+
+lang = Globals.lang
 
 config_path = Globals.config_path
 data_path = Globals.data_path
@@ -23,8 +26,6 @@ class PostState(StatesGroup):
     waiting_add = State()
     waiting_edit = State()
 
-
-# TODO Добавить строки локализации
 
 @router.message(PostState.waiting_add)
 async def on_waiting_add_post(message: Message, state: FSMContext, bot: Bot):
@@ -40,12 +41,12 @@ async def on_waiting_add_post(message: Message, state: FSMContext, bot: Bot):
     await state.clear()
 
     keyboard = PostsKeyboard().builder
-    await message.answer(f"Текущее количество постов: {len(posts)}.\n\nЧто хотите сделать с постами?", reply_markup=keyboard.as_markup())
+    await message.answer(f"{STRINGS[lang]['current_posts_number']}: {len(posts)}.\n\n{STRINGS[lang]['on_posts_command']}", reply_markup=keyboard.as_markup())
 
 
 @router.callback_query(Callback.filter(F.action == "posts-add"))
 async def on_posts_add_callback(query: CallbackQuery, state: FSMContext):
-    await query.message.edit_text("Отправьте новый пост.\nМожно приложить не больше одного изображения.")
+    await query.message.edit_text(STRINGS[lang]["on_posts_edit_waiting"])
     await state.set_state(PostState.waiting_add)
 
 
@@ -69,12 +70,12 @@ async def on_waiting_edit_post(message: Message, state: FSMContext, bot: Bot):
     await state.clear()
 
     keyboard = PostsKeyboard().builder
-    await message.answer(f"Текущее количество постов: {len(posts)}.\n\nЧто хотите сделать с постами?", reply_markup=keyboard.as_markup())
+    await message.answer(f"{STRINGS[lang]['current_posts_number']}: {len(posts)}.\n\n{STRINGS[lang]['on_posts_command']}", reply_markup=keyboard.as_markup())
 
 
 @router.callback_query(Callback.filter(F.action == "posts-edit-numbers"))
 async def on_posts_edit_numbers_callback(query: CallbackQuery, callback_data: Callback, state: FSMContext):
-    await query.message.edit_text("Отправьте изменённый пост.\nМожно приложить не больше одного изображения.")
+    await query.message.edit_text(STRINGS[lang]["on_posts_edit_waiting"])
     await state.update_data(index=callback_data.index)
     await state.set_state(PostState.waiting_edit)
 
@@ -85,11 +86,11 @@ async def on_posts_edit_callback(query: CallbackQuery):
 
     if len(posts) == 0:
         keyboard = BackKeyboard("posts").builder
-        await query.message.edit_text("Список постов пустой", reply_markup=keyboard.as_markup())
+        await query.message.edit_text(STRINGS[lang]["on_emtpy_posts_list"], reply_markup=keyboard.as_markup())
         return None
 
     keyboard = NumbersKeyboard("posts", "posts-edit-numbers", posts).builder
-    await query.message.edit_text("Выберите пост, который хотите изменить.", reply_markup=keyboard.as_markup())
+    await query.message.edit_text(STRINGS[lang]["on_posts_edit_callback"], reply_markup=keyboard.as_markup())
 
 
 @router.callback_query(Callback.filter(F.action == "posts-delete-numbers"))
@@ -105,7 +106,7 @@ async def on_posts_delete_numbers_callback(query: CallbackQuery, callback_data: 
             os.remove(posts[_index]["file"])
         posts.pop(_index)
         JsonReader.write(posts, data_path, False)
-        await query.message.edit_text(f"Текущее количество постов: {len(posts)}.\n\nЧто хотите сделать с постами?", reply_markup=keyboard.as_markup())
+        await query.message.edit_text(f"{STRINGS[lang]['current_posts_number']}: {len(posts)}.\n\n{STRINGS[lang]['on_posts_command']}", reply_markup=keyboard.as_markup())
         return None
 
     for post in posts:
@@ -113,7 +114,7 @@ async def on_posts_delete_numbers_callback(query: CallbackQuery, callback_data: 
             os.remove(post["file"])
 
     JsonReader.write([], data_path, False)
-    await query.message.edit_text("Текущее количество постов: 0.\n\nЧто хотите сделать с постами?", reply_markup=keyboard.as_markup())
+    await query.message.edit_text(f"{STRINGS[lang]['current_posts_number']}: 0.\n\n{STRINGS[lang]['on_posts_command']}", reply_markup=keyboard.as_markup())
 
 
 @router.callback_query(Callback.filter(F.action == "posts-delete"))
@@ -122,11 +123,11 @@ async def on_posts_delete_callback(query: CallbackQuery):
 
     if len(posts) == 0:
         keyboard = BackKeyboard("posts").builder
-        await query.message.edit_text("Список постов пустой", reply_markup=keyboard.as_markup())
+        await query.message.edit_text(STRINGS[lang]["on_emtpy_posts_list"], reply_markup=keyboard.as_markup())
         return None
 
     keyboard = NumbersKeyboard("posts", "posts-delete-numbers", posts, is_all_button=True).builder
-    await query.message.edit_text("Выберите пост, который хотите удалить.", reply_markup=keyboard.as_markup())
+    await query.message.edit_text(STRINGS[lang]["on_posts_delete_callback"], reply_markup=keyboard.as_markup())
 
 
 @router.callback_query(Callback.filter(F.action == "posts-list-numbers"))
@@ -148,7 +149,7 @@ async def on_posts_list_numbers_callback(query: CallbackQuery, callback_data: Ca
         await query.message.answer(posts[_index]["message"])
 
         await query.message.delete()
-        await query.message.answer("Что хотите сделать с постами?", reply_markup=keyboard.as_markup())
+        await query.message.answer(STRINGS[lang]["on_posts_command"], reply_markup=keyboard.as_markup())
 
         return None
 
@@ -160,7 +161,7 @@ async def on_posts_list_numbers_callback(query: CallbackQuery, callback_data: Ca
             await query.message.answer(post["message"])
 
     await query.message.delete()
-    await query.message.answer("Что хотите сделать с постами?", reply_markup=keyboard.as_markup())
+    await query.message.answer(STRINGS[lang]["on_posts_command"], reply_markup=keyboard.as_markup())
 
 
 @router.callback_query(Callback.filter(F.action == "posts-list"))
@@ -168,20 +169,20 @@ async def on_posts_list_callback(query: CallbackQuery):
     posts: list[dict] = JsonReader.read(data_path, False)
     if len(posts) == 0:
         keyboard = BackKeyboard("posts").builder
-        await query.message.edit_text("Список постов пустой", reply_markup=keyboard.as_markup())
+        await query.message.edit_text(STRINGS[lang]["on_emtpy_posts_list"], reply_markup=keyboard.as_markup())
         return None
 
     keyboard = NumbersKeyboard("posts", "posts-list-numbers", posts, is_all_button=True).builder
-    await query.message.edit_text("Выберите пост, который хотите удалить.", reply_markup=keyboard.as_markup())
+    await query.message.edit_text(STRINGS[lang]["on_posts_list_callback"], reply_markup=keyboard.as_markup())
 
 
 @router.callback_query(Callback.filter(F.action == "posts-back"))
 async def on_posts_back_callback(query: CallbackQuery):
     keyboard = PostsKeyboard().builder
-    await query.message.edit_text("Что хотите сделать с постами?", reply_markup=keyboard.as_markup())
+    await query.message.edit_text(STRINGS[lang]["on_posts_command"], reply_markup=keyboard.as_markup())
 
 
 @router.callback_query(Callback.filter(F.action == "start-posts"))
 async def on_posts_callback(query: CallbackQuery):
     keyboard = PostsKeyboard().builder
-    await query.message.edit_text("Что хотите сделать с постами?", reply_markup=keyboard.as_markup())
+    await query.message.edit_text(STRINGS[lang]["on_posts_command"], reply_markup=keyboard.as_markup())
