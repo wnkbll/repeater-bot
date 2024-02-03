@@ -9,12 +9,6 @@ from src.bot.routes import routers
 from src.utils import environment
 from src.lang import STRINGS
 
-lang = "ru"
-
-# TODO Переместить логгер(или убрать мб?)
-logger.add("logs/bot/errors.log", level="ERROR", format="{time:DD.MM.YYYY, HH:mm:ss} | {level} | {message}",
-           rotation="1MB", compression="zip")
-
 
 async def setup():
     bot = Bot(token=environment.token)
@@ -30,7 +24,6 @@ async def setup():
 
 
 def main():
-    # TODO Переработать строки в src.lang
     asyncio.run(setup())
 
 

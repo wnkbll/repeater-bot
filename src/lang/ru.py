@@ -27,6 +27,31 @@ BOT: dict[str, str] = {
     "on_bad_link": "Вы ввели неправильную ссылку",
 }
 
+BUTTONS: dict[str, str] = {
+    "start_posts_button": "Список постов",
+    "start_chats_button": "Список чатов",
+    "start_sleep_button": "Время сна",
+
+    "add_posts_button": "Добавить пост",
+    "edit_posts_button": "Изменить пост",
+    "delete_posts_button": "Удалить пост",
+    "list_posts_button": "Список постов",
+
+    "add_chats_button": "Добавить чат",
+    "edit_chats_button": "Изменить чат",
+    "delete_chats_button": "Удалить чат",
+    "list_chats_button": "Список чатов",
+
+    "edit_sleep_button": "Изменить время",
+    "list_sleep_button": "Посмотреть время",
+
+    "edit_start_sleep_button": "Начало сна",
+    "edit_end_sleep_button": "Окончание сна",
+
+    "all_button": "Все",
+    "back_button": "<< Назад",
+}
+
 CLIENT: dict[str, str] = {
     "post_sent": "Сообщение в канал {title} отправлено.",
 }
@@ -37,6 +62,9 @@ def register(strings: dict) -> dict[str, dict[str, str]]:
     strings[lang] = {}
 
     for item in BOT.items():
+        strings[lang][item[0]] = item[1]
+
+    for item in BUTTONS.items():
         strings[lang][item[0]] = item[1]
 
     for item in CLIENT.items():

@@ -28,8 +28,6 @@ class ChatsState(StatesGroup):
     waiting_edit = State()
 
 
-# TODO Добавить строки локализации
-
 @router.message(ChatsState.waiting_add)
 async def on_waiting_add_chat(message: Message, state: FSMContext):
     link_pattern = Globals.link_pattern

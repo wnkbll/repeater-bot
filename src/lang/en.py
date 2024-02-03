@@ -27,6 +27,31 @@ BOT: dict[str, str] = {
     "on_bad_link": "You entered the wrong link",
 }
 
+BUTTONS: dict[str, str] = {
+    "start_posts_button": "List of posts",
+    "start_chats_button": "Lists of chats",
+    "start_sleep_button": "Sleep time",
+
+    "add_posts_button": "Add post",
+    "edit_posts_button": "Edit post",
+    "delete_posts_button": "Delete post",
+    "list_posts_button": "List of posts",
+
+    "add_chats_button": "Add chat",
+    "edit_chats_button": "Edit chat",
+    "delete_chats_button": "Delete chat",
+    "list_chats_button": "List of chats",
+
+    "edit_sleep_button": "Edit time",
+    "list_sleep_button": "Check time",
+
+    "edit_start_sleep_button": "Sleep time start",
+    "edit_end_sleep_button": "Sleep time end",
+
+    "all_button": "All",
+    "back_button": "<< Back",
+}
+
 CLIENT: dict[str, str] = {
     "post_sent": "Message has been sent into {title}"
 }
@@ -37,6 +62,9 @@ def register(strings: dict) -> dict[str, dict[str, str]]:
     strings[lang] = {}
 
     for item in BOT.items():
+        strings[lang][item[0]] = item[1]
+
+    for item in BUTTONS.items():
         strings[lang][item[0]] = item[1]
 
     for item in CLIENT.items():
