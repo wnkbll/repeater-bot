@@ -66,7 +66,7 @@ class Client:
 
         try:
             await self.client.send_message(entity, posts[index]["message"], file=posts[index]["file"])
-            logger.success(STRINGS[lang]["post_sent"].format(title=entity.title))
+            logger.success(STRINGS[lang]["on_send_post"].format(title=entity.title))
         except errors.FloodWaitError as e:
             logger.error(STRINGS["debug"]["flood_wait_error"].format(seconds=e.seconds, title=entity.title))
         except errors.SlowModeWaitError as e:
