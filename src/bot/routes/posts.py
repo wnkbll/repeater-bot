@@ -146,7 +146,9 @@ async def on_posts_list_numbers_callback(query: CallbackQuery, callback_data: Ca
         if posts[_index]["file"]:
             image = FSInputFile(posts[_index]["file"])
             await query.message.answer_photo(image, caption=posts[_index]["message"])
+
             await query.message.delete()
+            await query.message.answer(STRINGS[lang]["on_posts_command"], reply_markup=keyboard.as_markup())
 
             return None
 
