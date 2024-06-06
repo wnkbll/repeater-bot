@@ -1,5 +1,5 @@
 [project]
-name = "RepeaterBotUpdated"
+name = "RepeaterBot"
 version = "2.0"
 dependencies = ["aiogram==3.3.0", "loguru==0.7.2", "python-dotenv==1.0.1", "pytz==2024.1", "tzlocal==5.2",
                 "pydantic==2.6.0", "schedule==1.2.1", "Telethon==1.34.0"]
