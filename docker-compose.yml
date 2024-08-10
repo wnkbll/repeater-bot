@@ -1,0 +1,22 @@
+services:
+  db:
+    image: postgres:16
+    container_name: postgres_server
+    command: -p 1221
+    expose:
+      - 1221
+    env_file:
+      - .env.prod
+    restart: on-failure
+  bot:
+    build: ./src/bot
+    container_name: bot_server
+    command: [ "/app/scripts/bot.sh" ]
+    env_file:
+      - .env.prod
+  client:
+    build: ./src/client
+    container_name: client_server
+    command: [ "/app/scripts/client.sh" ]
+    env_file:
+      - .env.prod
