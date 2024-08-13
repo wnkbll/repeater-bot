@@ -15,6 +15,7 @@ tzlocal = "^5.2"
 pydantic = "^2.8.2"
 schedule = "^1.2.2"
 telethon = "^1.36.0"
+pydantic-settings = "^2.4.0"
 
 
 [build-system]
