@@ -12,6 +12,7 @@ telethon = "^1.36.0"
 pydantic = "^2.8.2"
 pydantic-settings = "^2.4.0"
 loguru = "^0.7.2"
+redis = {extras = ["hiredis"], version = "^5.0.8"}
 
 
 [build-system]
