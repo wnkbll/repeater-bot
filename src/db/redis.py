@@ -1,7 +1,7 @@
 from loguru import logger
 from redis import asyncio as aioredis
 
-from src.core.settings import get_settings
+from src.core.settings import settings
 
 KeyType = bytes | str | memoryview
 ValueType = bytes | str | memoryview | int | float
@@ -9,7 +9,6 @@ ValueType = bytes | str | memoryview | int | float
 class Redis:
     @staticmethod
     async def set(*, key: KeyType, value: ValueType) -> None:
-        settings = get_settings()
         redis = aioredis.from_url(settings.redis_dsn)
 
         async with redis.client() as connection:
@@ -19,7 +18,6 @@ class Redis:
 
     @staticmethod
     async def get(*, key: KeyType) -> ValueType:
-        settings = get_settings()
         redis = aioredis.from_url(settings.redis_dsn)
 
         async with redis.client() as connection:
@@ -31,7 +29,6 @@ class Redis:
 
     @staticmethod
     async def delete(*, key: KeyType) -> None:
-        settings = get_settings()
         redis = aioredis.from_url(settings.redis_dsn)
 
         async with redis.client() as connection:
@@ -41,7 +38,6 @@ class Redis:
 
     @staticmethod
     async def exists(*, key: KeyType) -> bool:
-        settings = get_settings()
         redis = aioredis.from_url(settings.redis_dsn)
 
         async with redis.client() as connection:
@@ -49,7 +45,6 @@ class Redis:
 
     @staticmethod
     async def flush_all() -> None:
-        settings = get_settings()
         redis = aioredis.from_url(settings.redis_dsn)
 
         async with redis.client() as connection:

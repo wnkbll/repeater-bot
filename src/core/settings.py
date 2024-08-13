@@ -32,9 +32,12 @@ class Settings(BaseModel):
 
     @property
     def redis_dsn(self) -> RedisDsn:
-        return f"redis://{self.host}:{self.port}"
+        return f"redis://{self.redis.host}:{self.redis.port}"
 
 
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
+
+
+settings = get_settings()
