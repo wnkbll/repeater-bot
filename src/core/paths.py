@@ -4,3 +4,4 @@ ROOT_DIR = Path(__file__).parent.parent.parent
 SRC_DIR = ROOT_DIR.joinpath("src")
 ENV_PATH = ROOT_DIR.joinpath(".env")
 LOGGING_DIR = ROOT_DIR.joinpath("logs/")
+SESSION_PATH = ROOT_DIR.joinpath("session/client")
