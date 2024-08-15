@@ -17,3 +17,14 @@ class Chat(BaseModel):
 
 class ListOfChats(BaseModel):
     chats: list[Chat]
+
+
+class Sleep(BaseModel):
+    start: str
+    stop: str
+
+
+class Config(BaseModel):
+    white_list: list[int]
+    chats: ListOfChats
+    sleep: Sleep
