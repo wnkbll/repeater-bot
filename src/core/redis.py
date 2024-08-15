@@ -6,6 +6,7 @@ from src.core.settings import settings
 KeyType = bytes | str | memoryview
 ValueType = bytes | str | memoryview | int | float
 
+
 class Redis:
     @staticmethod
     async def set(*, key: KeyType, value: ValueType) -> None:
