@@ -6,6 +6,14 @@ class Post(BaseModel):
     file: FilePath | None = None
 
 
+class ListOfPosts(BaseModel):
+    posts: list[Post]
+
+
 class Chat(BaseModel):
     url: AnyUrl
     time: list[str] | int
+
+
+class ListOfChats(BaseModel):
+    chats: list[Chat]
