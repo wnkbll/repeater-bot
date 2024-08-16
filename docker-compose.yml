@@ -1,7 +1,16 @@
 version: "3.9"
 
 services:
-  redis:
+  postgres_server:
+    image: postgres:16
+    container_name: postgres_server
+    command: -p 1221
+    expose:
+      - 1221
+    env_file:
+      - .env.prod
+    restart: on-failure
+  redis_server:
     image: redis:7
     container_name: redis_server
     command: --port 5370
@@ -10,21 +19,28 @@ services:
     env_file:
       - .env.prod
     restart: on-failure
-    volumes:
-      - redis-data:/data
   bot:
     build: .
     container_name: bot_server
     command: [ "/app/scripts/bot.sh" ]
     env_file:
       - .env.prod
+    volumes:
+      - file-storage:/app/data
+    depends_on:
+      - postgres_server
+      - redis_server
   client:
     build: .
     container_name: client_server
     command: [ "/app/scripts/client.sh" ]
     env_file:
       - .env.prod
+    volumes:
+      - file-storage:/app/data
+    depends_on:
+      - postgres_server
+      - redis_server
 
 volumes:
-  redis-data:
-    driver: local
+  file-storage:
