@@ -3,7 +3,7 @@ from pydantic import BaseModel, FilePath
 from src.models.base import IDModelMixin, TimestampsModelMixin
 
 
-class PostInDB(IDModelMixin, TimestampsModelMixin):
+class Post(IDModelMixin, TimestampsModelMixin):
     text: str
     file: FilePath | None = None
 
@@ -19,4 +19,5 @@ class PostInUpdate(BaseModel):
 
 
 class ListOfPosts(BaseModel):
-    posts: list[PostInDB]
+    posts: list[Post]
+    count: int
