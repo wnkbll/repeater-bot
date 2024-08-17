@@ -1,6 +1,6 @@
 from loguru import logger
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine, async_sessionmaker
 
 from src.core.settings import settings
 from src.db.tables import Table
@@ -14,6 +14,16 @@ class Postgres:
             return async_engine
         except SQLAlchemyError as e:
             logger.warning("Unable to establish db engine, database might not exist yet")
+
+    @staticmethod
+    def get_async_session_factory() -> async_sessionmaker[AsyncSession]:
+        async_engine: AsyncEngine = Postgres.get_async_engine()
+
+        async_session_factory: async_sessionmaker[AsyncSession] = async_sessionmaker(
+            bind=async_engine, autoflush=False, expire_on_commit=False
+        )
+
+        return async_session_factory
 
     @staticmethod
     async def initialize_database() -> None:
