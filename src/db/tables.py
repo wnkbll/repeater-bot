@@ -24,8 +24,8 @@ class PostsTable(Table):
     __tablename__ = "Posts"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    text: Mapped[str] = mapped_column(String, nullable=False, unique=True)
-    file: Mapped[str] = mapped_column(String, nullable=False, unique=True)
+    text: Mapped[str] = mapped_column(String, nullable=False)
+    file: Mapped[str] = mapped_column(String, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )
