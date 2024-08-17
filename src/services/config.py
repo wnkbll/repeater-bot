@@ -1,2 +1,0 @@
-class ConfigService:
-    pass
