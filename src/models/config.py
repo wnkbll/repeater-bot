@@ -1,13 +1,4 @@
-from pydantic import BaseModel, FilePath, AnyUrl
-
-
-class Post(BaseModel):
-    text: str
-    file: FilePath | None = None
-
-
-class ListOfPosts(BaseModel):
-    posts: list[Post]
+from pydantic import BaseModel, AnyUrl
 
 
 class Chat(BaseModel):
