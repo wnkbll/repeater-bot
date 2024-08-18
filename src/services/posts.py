@@ -1,5 +1,4 @@
 from pydantic import TypeAdapter
-from sqlalchemy.util import await_only
 
 from src.core.settings import settings
 from src.db.postgres import Postgres
