@@ -36,10 +36,23 @@ class TelegramSettings(BaseSettings):
     phone: str = Field(validation_alias="PHONE")
 
 
+class LoggingSettings(BaseModel):
+    file: str = "backend.log"
+    rotation: str = "2MB"
+    compression: str = "zip"
+
+
+class PrefixSettings(BaseModel):
+    posts: str = "posts"
+
+
 class Settings(BaseModel):
     redis: RedisSettings = RedisSettings()
     postgres: PostgresSettings = PostgresSettings()
     telegram: TelegramSettings = TelegramSettings()
+
+    prefixes: PrefixSettings = PrefixSettings()
+    logging: LoggingSettings = LoggingSettings()
 
     @property
     def postgres_dsn(self) -> PostgresDsn:
