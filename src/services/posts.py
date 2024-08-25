@@ -14,8 +14,9 @@ class PostsService:
         self.type_adapter = TypeAdapter(Post)
 
     async def cache_post(self, post: Post) -> None:
+        key = f"{settings.prefixes.posts}:{post.id}"
         encoded = self.type_adapter.dump_json(post).decode("utf-8")
-        await Redis.set(key=f"{settings.prefixes.posts}:{post.id}", value=encoded)
+        await Redis.set(key=key, value=encoded)
 
     async def create(self, *, text: str, file: str = None) -> Post:
         post_in_create = PostInCreate(text=text, file=file)
@@ -26,7 +27,8 @@ class PostsService:
         return post
 
     async def get(self, *, id_: int) -> Post:
-        encoded = await Redis.get(key=f"{settings.prefixes.posts}:{id_}")
+        key = f"{settings.prefixes.posts}:{id_}"
+        encoded = await Redis.get(key=key)
 
         if encoded is not None:
             return self.type_adapter.validate_json(encoded)
@@ -42,7 +44,8 @@ class PostsService:
         return post
 
     async def delete(self, *, id_: int) -> Post:
-        if await Redis.exists(key=f"{settings.prefixes.posts}:{id_}"):
-            await Redis.delete(key=f"{settings.prefixes.posts}:{id_}")
+        key = f"{settings.prefixes.posts}:{id_}"
+        if await Redis.exists(key=key):
+            await Redis.delete(key=key)
 
         return await self.posts_repo.delete(id_=id_)
